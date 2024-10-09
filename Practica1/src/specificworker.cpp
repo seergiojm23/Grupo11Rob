@@ -93,6 +93,18 @@ void SpecificWorker::compute()
             ret_val = turn(p_filter);
             break;
         }
+
+        case STATE::SPIRAL:
+        {
+            ret_val = spiral(p_filter);
+            break;
+        }
+
+        case STATE::FOLLOW_WALL:
+        {
+            ret_val = follow_wall(p_filter);
+            break;
+        }
     }
     /// unpack  the tuple
     auto [st, adv, rot] = ret_val;
@@ -152,7 +164,7 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points)
     if(min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD)
     {
         first_time = true;
-        return RetVal(STATE::FORWARD, 0.f, 0.f);
+        return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f);
     }
     else    // Keep doing my business
     {
@@ -167,6 +179,67 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points)
         return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
     }
 }
+
+SpecificWorker::RetVal SpecificWorker::spiral(auto &points)
+{
+    // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
+    int offset = params.LIDAR_OFFSET * (points.size() / 2);
+    auto min_point = std::min_element(std::begin(points) + offset, std::end(points) - offset, [](auto &a, auto &b)
+        {  return a.distance2d < b.distance2d; });
+    if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
+        return RetVal(STATE::TURN, 0.f, 0.f);  // stop and change state if obstacle detected
+
+    static float spiral_adv_speed = 1.f;
+    static float spiral_rot_speed = params.MAX_ROT_SPEED;
+
+    spiral_adv_speed = std::min(spiral_adv_speed + 10.f, params.MAX_ADV_SPEED);
+    spiral_rot_speed = std::max(spiral_rot_speed - 0.001f,  0.001f);
+    return RetVal(STATE::SPIRAL, spiral_adv_speed, spiral_rot_speed);
+}
+
+SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points)
+{
+    // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
+    int offset = params.LIDAR_OFFSET * (points.size() / 2);
+    auto min_point = std::min_element(std::begin(points) + offset, std::end(points) - offset, [](auto &a, auto &b)
+        { return a.distance2d < b.distance2d; });
+
+    // Si hay un obstáculo muy cerca, cambiamos al estado de giro
+    if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
+        return RetVal(STATE::TURN, 0.f, 0.f);  // Detener y cambiar a TURN si se detecta un obstáculo
+
+    // Para seguir la pared, ajustamos la rotación dependiendo de la distancia lateral a la pared
+    static float follow_wall_adv_speed = params.MAX_ADV_SPEED;  // Velocidad de avance constante
+    float follow_wall_rot_speed = 0.0;  // Velocidad de rotación inicial
+
+    // Parámetros de referencia para seguir la pared
+    float reference_distance = params.REFERENCE_DISTANCE;  // Distancia de referencia a la pared
+    float delta = params.DELTA;  // Margen de error permitido para la distancia
+
+    // Usamos los puntos laterales del LIDAR para calcular la distancia a la pared
+    auto side_point = std::min_element(std::begin(points), std::begin(points) + offset, [](auto &a, auto &b)
+        { return a.distance2d < b.distance2d; });  // Punto lateral izquierdo (modificar según necesidad)
+
+    if (side_point != points.end())
+    {
+        float distance_to_wall = side_point->distance2d;
+
+        // Si está demasiado cerca de la pared
+        if (distance_to_wall < reference_distance - delta)
+        {
+            follow_wall_rot_speed = -0.2;  // Alejarse de la pared girando a la derecha
+        }
+        // Si está demasiado lejos de la pared
+        else if (distance_to_wall > reference_distance + delta)
+        {
+            follow_wall_rot_speed = 0.2;   // Acercarse a la pared girando a la izquierda
+        }
+    }
+
+    // Avanzar manteniendo la rotación ajustada según la distancia a la pared
+    return RetVal(STATE::FOLLOW_WALL, follow_wall_adv_speed, follow_wall_rot_speed);
+}
+
 
 /**
  * Draws LIDAR points onto a QGraphicsScene.
