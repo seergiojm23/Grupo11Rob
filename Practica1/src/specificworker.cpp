@@ -165,8 +165,8 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points)
     // Instantiate the random number generator and distribution
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<int> dist(0, 1);
-    static bool first_time = true;
-    static int sign = 1;
+    //static bool first_time = true;
+    //static int sign = 1;
 
     // check if the central part of the filtered_points vector is free to go. If so stop turning and change state to FORWARD
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
@@ -177,18 +177,25 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points)
         { return a.distance2d < b.distance2d; });
         if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD)
         {
-            first_time = true;
-            return RetVal(STATE::SPIRAL, 0.f, 0.f);
+            //first_time = true;
+            return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f);
         } else    // Keep doing my business
         {
-            // Generate a random sign (-1 or 1) if first_time = true;
-            if (first_time)
-            {
-                sign = dist(gen);
-                if (sign == 0) sign = -1; else sign = 1;
-                first_time = false;
+            if(min_point->phi > 0.2) {
+                qDebug()<< min_point->distance2d;
+                return RetVal(STATE::TURN, 0.f, -1 * params.MAX_ROT_SPEED);
             }
-            return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
+            if(min_point->phi < -0.2) {
+                qDebug()<< min_point->distance2d;
+                return RetVal(STATE::TURN, 0.f, params.MAX_ROT_SPEED);
+            }
+            qDebug()<< min_point->distance2d;
+            return RetVal(STATE::TURN, 0.f, -1 * params.MAX_ROT_SPEED);
+            // // Generate a random sign (-1 or 1) if first_time = true
+            //     sign = dist(gen);
+            //     if (sign == 0) sign = -1; else sign = 1;
+            //     //first_time = false;
+            // return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
         }
     }
     else // no valid readings
@@ -225,26 +232,72 @@ SpecificWorker::RetVal SpecificWorker::spiral(auto &points)
 
 SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points)
 {
+    // Encontrar los índices correspondientes al ángulo frontal del LIDAR
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-    if(offset_begin and offset_end) {
+
+    if (offset_begin and offset_end)
+    {
+        // Encontrar el punto más cercano dentro del rango frontal
         auto min_point = std::min_element(std::begin(points) + offset_begin.value(), std::begin(points) + offset_end.value(), [](auto &a, auto &b)
         { return a.distance2d < b.distance2d; });
+
+        // Si el robot está muy cerca de un obstáculo, cambiar al estado de giro
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
-            return RetVal(STATE::TURN, 0.f, 0.f);  // stop and change state if obstacle detected
+            return RetVal(STATE::TURN, 0.f, 0.f);  // Cambiar a TURN si se detecta un obstáculo
+
         else {
-            bool izquierdaacerca; //Acerca a la pared a la izquierda (umbral alto)
-            bool derechaacerca; //Acerca a la pared a la derecha (umbral alto)
-            bool izquierdaaleja; //Aleja de la pared hacia la  izquierda (umbral corto)
-            bool derechaaleja; //Aleja de la pared hacia la derecha (umbral corto)
-
-            
-
+            // Booleanos para determinar si acercarse o alejarse
+            bool izquierdaacerca = false;
+            bool derechaacerca = false;
+            bool izquierdaaleja = false;
+            bool derechaaleja = false;
+            // Calculamos la distancia lateral (izquierda y derecha) usando LIDAR
+            auto left_index = closest_lidar_index_to_given_angle(points, -M_PI / 4); // 45 grados a la izquierda
+            auto right_index = closest_lidar_index_to_given_angle(points, M_PI / 4); // 45 grados a la derecha
+            float follow_wall_rot_speed = 0.0;
+            if (left_index and right_index) {
+                float left_dist = points[left_index.value()].distance2d;
+                float right_dist = points[right_index.value()].distance2d;
+                // Si está en la distancia adecuada a la pared, no ajustar la rotación
+                if (std::abs(left_dist - params.REFERENCE_DISTANCE) < params.DELTA) {
+                    // La distancia está bien, mantener la trayectoria
+                    follow_wall_rot_speed = 0.0;
+                } else {
+                    // Ajustar rotación basándose en la distancia a la pared izquierda
+                    if (left_dist < params.REFERENCE_DISTANCE - params.DELTA) {
+                        izquierdaacerca = true; // Demasiado cerca de la pared izquierda, alejarse girando a la derecha
+                    } else if (left_dist > params.REFERENCE_DISTANCE + params.DELTA) {
+                        izquierdaaleja = true;
+                        // Demasiado lejos de la pared izquierda, acercarse girando a la izquierda
+                    }
+                    // Ajustar rotación basándose en la distancia a la pared derecha
+                    if (right_dist < params.REFERENCE_DISTANCE - params.DELTA) {
+                        derechaacerca = true; // Demasiado cerca de la pared derecha, alejarse girando a la izquierda
+                    } else if (right_dist > params.REFERENCE_DISTANCE + params.DELTA) {
+                        derechaaleja = true; // Demasiado lejos de la pared derecha, acercarse girando a la derecha
+                    }
+                }
+                // Ajustar la velocidad de rotación según los booleanos de acercamiento y alejamiento
+                if (izquierdaacerca)
+                    follow_wall_rot_speed = -0.1; // Alejarse suavemente de la pared izquierda
+                else if (izquierdaaleja)
+                    follow_wall_rot_speed = 0.1; // Acercarse suavemente a la pared izquierda
+                if (derechaacerca)
+                    follow_wall_rot_speed = 0.1; // Alejarse suavemente de la pared derecha
+                else if (derechaaleja)
+                    follow_wall_rot_speed = -0.1; // Acercarse suavemente a la pared derecha
+            }
+            // Mantener la velocidad de avance mientras se ajusta la rotación
+            return RetVal(STATE::FOLLOW_WALL, params.MAX_ADV_SPEED, follow_wall_rot_speed);
         }
+    } else {
+        qWarning() << "No valid readings. Stopping";
+        return RetVal(STATE::FORWARD, 0.f, 0.f); // Detener si no hay lecturas válidas
     }
 
-
 }
+
 
 
 /**
