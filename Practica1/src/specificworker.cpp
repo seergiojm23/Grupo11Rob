@@ -151,8 +151,13 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<int> dist(0, 1);
     static bool first_time = true; // Controla si es la primera vez que gira
+    static int cont = 0;
     static int sign = 1;
 
+    static std::random_device rd;
+    static std::uniform_int_distribution<int> distri(0, 3);
+
+    int randomvalue = distri(gen);
 
     // Comprobar si la parte central estrecha de los puntos filtrados está libre para avanzar
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
@@ -172,11 +177,16 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
 
     // Si hay suficiente espacio en frente, decidir si hacer FOLLOW_WALL o SPIRAL
     if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD) {
-        if (first_time) {
-            first_time = false; // Marcar que ya ha girado por primera vez
+        if (cont < 3) {
+            cont++; // Marcar que ya ha girado por primera vez
             return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
         } else {
-            return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f); // En las siguientes veces irá a SPIRAL
+            if(randomvalue == 0) {
+                return RetVal(STATE::FORWARD, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
+            }
+            else {
+                return RetVal(STATE::SPIRAL, 0.f, 0.f); // En las siguientes veces irá a SPIRAL
+            }
         }
     }
 
@@ -210,12 +220,24 @@ SpecificWorker::RetVal SpecificWorker::spiral(auto &points) {
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
             return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         else {
-            static float spiral_adv_speed = 1.f;
+            static float spiral_adv_speed = 100.f;
             static float spiral_rot_speed = params.MAX_ROT_SPEED;
 
             spiral_adv_speed = std::min(spiral_adv_speed + 10.f, params.MAX_ADV_SPEED);
             spiral_rot_speed = std::max(spiral_rot_speed - 0.001f, 0.001f);
-            return RetVal(STATE::SPIRAL, spiral_adv_speed, spiral_rot_speed);
+
+            static std::mt19937 gen(rd());
+            static std::uniform_int_distribution<int> dist(0, 1);
+            static int sign = 1;
+
+            auto min_point_all = std::ranges::min_element(points, [](auto &a, auto &b) { return a.distance2d < b.distance2d; });
+            if (min_point_all->phi < 0.1 and min_point_all->phi > -0.1) {
+                sign = dist(gen);
+                sign = (sign == 0) ? -1 : 1;
+            } else {
+                sign = (min_point_all->phi > 0) ? -1 : 1; // Determinar dirección según el ángulo
+            }
+            return RetVal(STATE::SPIRAL, spiral_adv_speed, sign * spiral_rot_speed);
         }
     } else {
         qWarning() << "No valid readings. Stopping";
@@ -254,6 +276,7 @@ SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points) {
         qWarning() << "No valid readings. Stopping";
         return RetVal(STATE::FORWARD, 0.f, 0.f); // Detener si no hay lecturas válidas
     }
+    return RetVal(STATE::FORWARD, 0.f, 0.f); // Detener si no hay lecturas válidas
 }
 
 /**
