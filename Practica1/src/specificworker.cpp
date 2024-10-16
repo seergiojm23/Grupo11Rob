@@ -22,34 +22,27 @@
 /**
 * \brief Default constructor
 */
-SpecificWorker::SpecificWorker(TuplePrx tprx, bool startup_check) : GenericWorker(tprx)
-{
-	this->startup_check_flag = startup_check;
+SpecificWorker::SpecificWorker(TuplePrx tprx, bool startup_check) : GenericWorker(tprx) {
+    this->startup_check_flag = startup_check;
     //	QLoggingCategory::setFilterRules("*.debug=false\n");
 }
 
 /**
 * \brief Default destructor
 */
-SpecificWorker::~SpecificWorker()
-{
-	std::cout << "Destroying SpecificWorker" << std::endl;
+SpecificWorker::~SpecificWorker() {
+    std::cout << "Destroying SpecificWorker" << std::endl;
 }
 
-bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
-{
-	return true;
+bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params) {
+    return true;
 }
 
-void SpecificWorker::initialize()
-{
-	std::cout << "Initialize worker" << std::endl;
-	if(this->startup_check_flag)
-	{
-		this->startup_check();
-	}
-	else
-	{
+void SpecificWorker::initialize() {
+    std::cout << "Initialize worker" << std::endl;
+    if (this->startup_check_flag) {
+        this->startup_check();
+    } else {
         ///////////// Your code ////////
         // Viewer
         viewer = new AbstractGraphicViewer(this->frame, params.GRID_MAX_DIM);
@@ -58,50 +51,45 @@ void SpecificWorker::initialize()
         viewer->show();
 
         ///////////////////////////////
-		#ifdef HIBERNATION_ENABLED
+#ifdef HIBERNATION_ENABLED
 			hibernationChecker.start(500);
-		#endif
+#endif
 
-		this->setPeriod(STATES::Compute, 100);
-	}
+        this->setPeriod(STATES::Compute, 100);
+    }
 }
 
-void SpecificWorker::compute()
-{
+void SpecificWorker::compute() {
     RoboCompLidar3D::TData ldata;
-    try{ ldata =  lidar3d_proxy->getLidarData("bpearl", 0, 2*M_PI, 1);}
-    catch(const Ice::Exception &e){std::cout << e << std::endl;}
+    try { ldata = lidar3d_proxy->getLidarData("bpearl", 0, 2 * M_PI, 1); } catch (const Ice::Exception &e) {
+        std::cout << e << std::endl;
+    }
 
-    RoboCompLidar3D::TPoints  p_filter;
+    RoboCompLidar3D::TPoints p_filter;
     std::ranges::copy_if(ldata.points, std::back_inserter(p_filter),
-                                               [](auto  &a){ return a.z < 500 and a.distance2d > 200;});
+                         [](auto &a) { return a.z < 500 and a.distance2d > 200; });
 
     draw_lidar(p_filter, &viewer->scene);
 
     /// Add State machine with your sweeping logic
     RetVal ret_val;
 
-    switch(state)
-    {
-        case STATE::FORWARD:
-        {
+    switch (state) {
+        case STATE::FORWARD: {
             ret_val = forward(p_filter);
             break;
         }
-        case STATE::TURN:
-        {
+        case STATE::TURN: {
             ret_val = turn(p_filter);
             break;
         }
 
-        case STATE::SPIRAL:
-        {
+        case STATE::SPIRAL: {
             ret_val = spiral(p_filter);
             break;
         }
 
-        case STATE::FOLLOW_WALL:
-        {
+        case STATE::FOLLOW_WALL: {
             ret_val = follow_wall(p_filter);
             break;
         }
@@ -111,8 +99,7 @@ void SpecificWorker::compute()
     state = st;
 
     /// Send movements commands to the robot
-    try{ omnirobot_proxy->setSpeedBase(0, adv, rot);}
-    catch(const Ice::Exception &e){std::cout << e << std::endl;}
+    try { omnirobot_proxy->setSpeedBase(0, adv, rot); } catch (const Ice::Exception &e) { std::cout << e << std::endl; }
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -129,21 +116,20 @@ void SpecificWorker::compute()
  * @param filtered_points A vector of filtered points representing the robot's perception of obstacles.
  * @return A `RetVal` tuple consisting of the state (`FORWARD` or `TURN`), speed, and rotation.
  */
-SpecificWorker::RetVal SpecificWorker::forward(auto &points)
-{
+SpecificWorker::RetVal SpecificWorker::forward(auto &points) {
     // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-    if(offset_begin and offset_end)
-    {
-        auto min_point = std::min_element(std::begin(points) + offset_begin.value(), std::begin(points) + offset_end.value(), [](auto &a, auto &b)
-        { return a.distance2d < b.distance2d; });
+    if (offset_begin and offset_end) {
+        auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                          std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                              return a.distance2d < b.distance2d;
+                                          });
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
-            return RetVal(STATE::TURN, 0.f, 0.f);  // stop and change state if obstacle detected
+            return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         else
             return RetVal(STATE::FORWARD, params.MAX_ADV_SPEED, 0.f);
-    }
-    else // no valid readings
+    } else // no valid readings
     {
         qWarning() << "No valid readings. Stopping";
         return RetVal(STATE::FORWARD, 0.f, 0.f);
@@ -160,145 +146,115 @@ SpecificWorker::RetVal SpecificWorker::forward(auto &points)
  * @param filtered_points A vector containing points with distance information used for making navigation decisions.
  * @returns A tuple containing the next state (FORWARD or TURN), and speed values.
  */
-SpecificWorker::RetVal SpecificWorker::turn(auto &points)
-{
+SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
     // Instantiate the random number generator and distribution
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<int> dist(0, 1);
-    //static bool first_time = true;
-    //static int sign = 1;
+    static bool first_time = true; // Controla si es la primera vez que gira
+    static int sign = 1;
 
-    // check if the central part of the filtered_points vector is free to go. If so stop turning and change state to FORWARD
+
+    // Comprobar si la parte central estrecha de los puntos filtrados está libre para avanzar
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-    if(offset_begin and offset_end)
-    {
-        auto min_point = std::min_element(std::begin(points) + offset_begin.value(), std::begin(points) + offset_end.value(), [](auto &a, auto &b)
-        { return a.distance2d < b.distance2d; });
-        if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD)
-        {
-            //first_time = true;
-            return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f);
-        } else    // Keep doing my business
-        {
-            if(min_point->phi > 0.2) {
-                qDebug()<< min_point->distance2d;
-                return RetVal(STATE::TURN, 0.f, -1 * params.MAX_ROT_SPEED);
-            }
-            if(min_point->phi < -0.2) {
-                qDebug()<< min_point->distance2d;
-                return RetVal(STATE::TURN, 0.f, params.MAX_ROT_SPEED);
-            }
-            qDebug()<< min_point->distance2d;
-            return RetVal(STATE::TURN, 0.f, -1 * params.MAX_ROT_SPEED);
-            // // Generate a random sign (-1 or 1) if first_time = true
-            //     sign = dist(gen);
-            //     if (sign == 0) sign = -1; else sign = 1;
-            //     //first_time = false;
-            // return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
-        }
-    }
-    else // no valid readings
-    {
+
+    // Salir si no hay lecturas válidas
+    if (not offset_begin or not offset_end) {
         qWarning() << "No valid readings. Stopping";
         return RetVal(STATE::FORWARD, 0.f, 0.f);
     }
+
+    // Encontrar el punto mínimo en la parte central
+    auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                      std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                          return a.distance2d < b.distance2d;
+                                      });
+
+    // Si hay suficiente espacio en frente, decidir si hacer FOLLOW_WALL o SPIRAL
+    if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD) {
+        if (first_time) {
+            first_time = false; // Marcar que ya ha girado por primera vez
+            return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
+        } else {
+            return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f); // En las siguientes veces irá a SPIRAL
+        }
+    }
+
+    // Continuar girando
+    auto min_point_all = std::ranges::min_element(points, [](auto &a, auto &b) { return a.distance2d < b.distance2d; });
+
+    // Si el phi del min_point_all es negativo, girar a la derecha; si no, a la izquierda. Si está cerca de cero, gira aleatoriamente
+    if (first_time) {
+        if (min_point_all->phi < 0.1 and min_point_all->phi > -0.1) {
+            sign = dist(gen);
+            sign = (sign == 0) ? -1 : 1;
+        } else {
+            sign = (min_point_all->phi > 0) ? -1 : 1; // Determinar dirección según el ángulo
+        }
+        first_time = false; // Marcar que ya ha girado la primera vez
+    }
+
+    return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
 }
 
-SpecificWorker::RetVal SpecificWorker::spiral(auto &points)
-{
+
+SpecificWorker::RetVal SpecificWorker::spiral(auto &points) {
     // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-    if(offset_begin and offset_end) {
-        auto min_point = std::min_element(std::begin(points) + offset_begin.value(), std::begin(points) + offset_end.value(), [](auto &a, auto &b)
-        { return a.distance2d < b.distance2d; });
+    if (offset_begin and offset_end) {
+        auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                          std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                              return a.distance2d < b.distance2d;
+                                          });
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
-            return RetVal(STATE::TURN, 0.f, 0.f);  // stop and change state if obstacle detected
+            return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         else {
             static float spiral_adv_speed = 1.f;
             static float spiral_rot_speed = params.MAX_ROT_SPEED;
 
             spiral_adv_speed = std::min(spiral_adv_speed + 10.f, params.MAX_ADV_SPEED);
-            spiral_rot_speed = std::max(spiral_rot_speed - 0.001f,  0.001f);
+            spiral_rot_speed = std::max(spiral_rot_speed - 0.001f, 0.001f);
             return RetVal(STATE::SPIRAL, spiral_adv_speed, spiral_rot_speed);
         }
-    }
-    else {
+    } else {
         qWarning() << "No valid readings. Stopping";
         return RetVal(STATE::FORWARD, 0.f, 0.f);
     }
 }
 
-SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points)
-{
+SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points) {
     // Encontrar los índices correspondientes al ángulo frontal del LIDAR
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-
-    if (offset_begin and offset_end)
-    {
-        // Encontrar el punto más cercano dentro del rango frontal
-        auto min_point = std::min_element(std::begin(points) + offset_begin.value(), std::begin(points) + offset_end.value(), [](auto &a, auto &b)
-        { return a.distance2d < b.distance2d; });
-
-        // Si el robot está muy cerca de un obstáculo, cambiar al estado de giro
+    if (offset_begin and offset_end) {
+        auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                          std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                              return a.distance2d < b.distance2d;
+                                          });
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
-            return RetVal(STATE::TURN, 0.f, 0.f);  // Cambiar a TURN si se detecta un obstáculo
-
+            return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         else {
-            // Booleanos para determinar si acercarse o alejarse
-            bool izquierdaacerca = false;
-            bool derechaacerca = false;
-            bool izquierdaaleja = false;
-            bool derechaaleja = false;
-            // Calculamos la distancia lateral (izquierda y derecha) usando LIDAR
-            auto left_index = closest_lidar_index_to_given_angle(points, -M_PI / 4); // 45 grados a la izquierda
-            auto right_index = closest_lidar_index_to_given_angle(points, M_PI / 4); // 45 grados a la derecha
-            float follow_wall_rot_speed = 0.0;
-            if (left_index and right_index) {
-                float left_dist = points[left_index.value()].distance2d;
-                float right_dist = points[right_index.value()].distance2d;
-                // Si está en la distancia adecuada a la pared, no ajustar la rotación
-                if (std::abs(left_dist - params.REFERENCE_DISTANCE) < params.DELTA) {
-                    // La distancia está bien, mantener la trayectoria
-                    follow_wall_rot_speed = 0.0;
-                } else {
-                    // Ajustar rotación basándose en la distancia a la pared izquierda
-                    if (left_dist < params.REFERENCE_DISTANCE - params.DELTA) {
-                        izquierdaacerca = true; // Demasiado cerca de la pared izquierda, alejarse girando a la derecha
-                    } else if (left_dist > params.REFERENCE_DISTANCE + params.DELTA) {
-                        izquierdaaleja = true;
-                        // Demasiado lejos de la pared izquierda, acercarse girando a la izquierda
-                    }
-                    // Ajustar rotación basándose en la distancia a la pared derecha
-                    if (right_dist < params.REFERENCE_DISTANCE - params.DELTA) {
-                        derechaacerca = true; // Demasiado cerca de la pared derecha, alejarse girando a la izquierda
-                    } else if (right_dist > params.REFERENCE_DISTANCE + params.DELTA) {
-                        derechaaleja = true; // Demasiado lejos de la pared derecha, acercarse girando a la derecha
-                    }
-                }
-                // Ajustar la velocidad de rotación según los booleanos de acercamiento y alejamiento
-                if (izquierdaacerca)
-                    follow_wall_rot_speed = -0.1; // Alejarse suavemente de la pared izquierda
-                else if (izquierdaaleja)
-                    follow_wall_rot_speed = 0.1; // Acercarse suavemente a la pared izquierda
-                if (derechaacerca)
-                    follow_wall_rot_speed = 0.1; // Alejarse suavemente de la pared derecha
-                else if (derechaaleja)
-                    follow_wall_rot_speed = -0.1; // Acercarse suavemente a la pared derecha
+            // Determinar la posición de la pared y ajustar la velocidad de avance y rotación
+            if (min_point->phi < 0 and min_point->distance2d > params.REFERENCE_DISTANCE) {
+                return RetVal(STATE::FOLLOW_WALL, params.STOP_THRESHOLD, -0.3 * params.MAX_ROT_SPEED);
+                // Gira a la izquierda (lejos)
+            } else if (min_point->phi > 0 and min_point->distance2d > params.REFERENCE_DISTANCE) {
+                return RetVal(STATE::FOLLOW_WALL, params.STOP_THRESHOLD, 0.3 * params.MAX_ROT_SPEED);
+                // Gira a la derecha (lejos)
+            } else if (min_point->phi < 0 and min_point->distance2d < params.REFERENCE_DISTANCE) {
+                return RetVal(STATE::FOLLOW_WALL, params.MAX_ADV_SPEED, 0.3 * params.MAX_ROT_SPEED);
+                // Gira a la derecha (cerca)
+            } else if (min_point->phi > 0 and min_point->distance2d < params.REFERENCE_DISTANCE) {
+                return RetVal(STATE::FOLLOW_WALL, params.MAX_ADV_SPEED, -0.3 * params.MAX_ROT_SPEED);
+                // Gira a la izquierda (cerca)
             }
-            // Mantener la velocidad de avance mientras se ajusta la rotación
-            return RetVal(STATE::FOLLOW_WALL, params.MAX_ADV_SPEED, follow_wall_rot_speed);
         }
     } else {
         qWarning() << "No valid readings. Stopping";
         return RetVal(STATE::FORWARD, 0.f, 0.f); // Detener si no hay lecturas válidas
     }
-
 }
-
-
 
 /**
  * Draws LIDAR points onto a QGraphicsScene.
@@ -311,13 +267,11 @@ SpecificWorker::RetVal SpecificWorker::follow_wall(auto &points)
  *                        and distance.
  * @param scene A pointer to the QGraphicsScene where the points will be drawn.
  */
-void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene)
-{
-    static std::vector<QGraphicsItem*> items;   // store items so they can be shown between iterations
+void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene) {
+    static std::vector<QGraphicsItem *> items; // store items so they can be shown between iterations
 
     // remove all items drawn in the previous iteration
-    for(auto i: items)
-    {
+    for (auto i: items) {
         scene->removeItem(i);
         delete i;
     }
@@ -325,14 +279,15 @@ void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene)
 
     auto color = QColor(Qt::green);
     auto brush = QBrush(QColor(Qt::green));
-    for(const auto &p : filtered_points)
-    {
+    for (const auto &p: filtered_points) {
         auto item = scene->addRect(-50, -50, 100, 100, color, brush);
         item->setPos(p.x, p.y);
         items.push_back(item);
     }
     // compute and draw minimum distance point
-    auto p_min = std::ranges::min_element(filtered_points, [](auto &a, auto &b){return a.distance2d < b.distance2d;});
+    auto p_min = std::ranges::min_element(filtered_points, [](auto &a, auto &b) {
+        return a.distance2d < b.distance2d;
+    });
     auto item = scene->addRect(-150, -150, 300, 300, QColor(Qt::red), QBrush(QColor(Qt::red)));
     item->setPos(p_min->x, p_min->y);
     items.push_back(item);
@@ -341,30 +296,32 @@ void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene)
     // Draw two lines coming out from the robot at angles given by params.LIDAR_OFFSET
     // Calculate the end points of the lines
     //float angle1 = params.LIDAR_FRONT_SECTION / 2.f;
-    auto res_right = closest_lidar_index_to_given_angle(filtered_points, params.LIDAR_FRONT_SECTION/2.f);
-    auto res_left = closest_lidar_index_to_given_angle(filtered_points, -params.LIDAR_FRONT_SECTION/2.f);
-    if(res_right and res_left)
-    {
+    auto res_right = closest_lidar_index_to_given_angle(filtered_points, params.LIDAR_FRONT_SECTION / 2.f);
+    auto res_left = closest_lidar_index_to_given_angle(filtered_points, -params.LIDAR_FRONT_SECTION / 2.f);
+    if (res_right and res_left) {
         float right_line_length = filtered_points[res_right.value()].distance2d;
         float left_line_length = filtered_points[res_left.value()].distance2d;
         float angle1 = filtered_points[res_left.value()].phi;
         float angle2 = filtered_points[res_right.value()].phi;
-        QLineF line_left{QPointF(0.f, 0.f),
-                         robot_draw->mapToScene(left_line_length * sin(angle1), left_line_length * cos(angle1))};
-        QLineF line_right{QPointF(0.f, 0.f),
-                          robot_draw->mapToScene(right_line_length * sin(angle2), right_line_length * cos(angle2))};
+        QLineF line_left{
+            QPointF(0.f, 0.f),
+            robot_draw->mapToScene(left_line_length * sin(angle1), left_line_length * cos(angle1))
+        };
+        QLineF line_right{
+            QPointF(0.f, 0.f),
+            robot_draw->mapToScene(right_line_length * sin(angle2), right_line_length * cos(angle2))
+        };
         QPen left_pen(Qt::blue, 10); // Blue color pen with thickness 3
         QPen right_pen(Qt::red, 10); // Blue color pen with thickness 3
         auto line1 = scene->addLine(line_left, left_pen);
         auto line2 = scene->addLine(line_right, right_pen);
         items.push_back(line1);
         items.push_back(line2);
-    }
-    else
+    } else
         std::cout << res_right.error() << " " << res_left.error() << std::endl;
 
     // update UI
-    lcdNumber_minangle->display(atan2(p_min->x,p_min->y));
+    lcdNumber_minangle->display(atan2(p_min->x, p_min->y));
     lcdNumber_mindist->display(p_min->distance2d);
 }
 
@@ -378,41 +335,38 @@ void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene)
  *
  * @param points The collection of lidar points to search through.
  * @param angle The target angle to find the closest matching point.
- * @return std::expected<int, string> containing the index of the closest lidar point if found, 
+ * @return std::expected<int, string> containing the index of the closest lidar point if found,
  * or an error message if no such point exists.
  */
-std::expected<int, string> SpecificWorker::closest_lidar_index_to_given_angle(const auto &points, float angle)
-{
+std::expected<int, string> SpecificWorker::closest_lidar_index_to_given_angle(const auto &points, float angle) {
     // search for the point in points whose phi value is closest to angle
-    auto res = std::ranges::find_if(points, [angle](auto &a){ return a.phi > angle;});
-    if(res != std::end(points))
+    auto res = std::ranges::find_if(points, [angle](auto &a) { return a.phi > angle; });
+    if (res != std::end(points))
         return std::distance(std::begin(points), res);
     else
         return std::unexpected("No closest value found in method <closest_lidar_index_to_given_angle>");
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
-void SpecificWorker::emergency()
-{
+void SpecificWorker::emergency() {
     std::cout << "Emergency worker" << std::endl;
-	//computeCODE
-	//
-	//if (SUCCESSFUL)
+    //computeCODE
+    //
+    //if (SUCCESSFUL)
     //  emmit goToRestore()
 }
-//Execute one when exiting to emergencyState
-void SpecificWorker::restore()
-{
-    std::cout << "Restore worker" << std::endl;
-	//computeCODE
-	//Restore emergency component
 
+//Execute one when exiting to emergencyState
+void SpecificWorker::restore() {
+    std::cout << "Restore worker" << std::endl;
+    //computeCODE
+    //Restore emergency component
 }
-int SpecificWorker::startup_check()
-{
-	std::cout << "Startup check" << std::endl;
-	QTimer::singleShot(200, qApp, SLOT(quit()));
-	return 0;
+
+int SpecificWorker::startup_check() {
+    std::cout << "Startup check" << std::endl;
+    QTimer::singleShot(200, qApp, SLOT(quit()));
+    return 0;
 }
 
 /**************************************/
@@ -442,4 +396,3 @@ int SpecificWorker::startup_check()
 /**************************************/
 // From the RoboCompOmniRobot you can use this types:
 // RoboCompOmniRobot::TMechParams
-
