@@ -155,7 +155,7 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
     static int sign = 1;
 
     static std::random_device rd;
-    static std::uniform_int_distribution<int> distri(0, 3);
+    static std::uniform_int_distribution<int> distri(0, 4);
 
     int randomvalue = distri(gen);
 
@@ -177,7 +177,7 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
 
     // Si hay suficiente espacio en frente, decidir si hacer FOLLOW_WALL o SPIRAL
     if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD) {
-        if (cont < 3) {
+        if (cont < 4) {
             cont++; // Marcar que ya ha girado por primera vez
             return RetVal(STATE::FOLLOW_WALL, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
         } else {
@@ -212,16 +212,21 @@ SpecificWorker::RetVal SpecificWorker::spiral(auto &points) {
     // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
+    static int cont = 0;
+
     if (offset_begin and offset_end) {
         auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
                                           std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
                                               return a.distance2d < b.distance2d;
                                           });
-        if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
+        if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD) {
+            cont++;
             return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
+        }
         else {
             static float spiral_adv_speed = 100.f;
             static float spiral_rot_speed = params.MAX_ROT_SPEED;
+
 
             spiral_adv_speed = std::min(spiral_adv_speed + 10.f, params.MAX_ADV_SPEED);
             spiral_rot_speed = std::max(spiral_rot_speed - 0.001f, 0.001f);
@@ -236,6 +241,12 @@ SpecificWorker::RetVal SpecificWorker::spiral(auto &points) {
                 sign = (sign == 0) ? -1 : 1;
             } else {
                 sign = (min_point_all->phi > 0) ? -1 : 1; // Determinar dirección según el ángulo
+            }
+
+            if(cont == 7) {
+                spiral_adv_speed = 100.f;
+                spiral_rot_speed = params.MAX_ROT_SPEED;
+                cont = 0;
             }
             return RetVal(STATE::SPIRAL, spiral_adv_speed, sign * spiral_rot_speed);
         }
