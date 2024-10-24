@@ -103,7 +103,12 @@ void SpecificWorker::compute()
     catch(const Ice::Exception &e){std::cout << e << std::endl;}
     lcdNumber_adv->display(adv);
     lcdNumber_rot ->display(rot);
+
+
+    //state_machine(person.value());
 }
+
+
 
 //////////////////////////////////////////////////////////////////
 /// YOUR CODE HERE
@@ -178,6 +183,10 @@ SpecificWorker::RobotSpeed SpecificWorker::state_machine(const RoboCompVisualEle
             res = stop();
             label_state->setText("STOP");
             break;
+        case STATE::SEARCH:
+            res = search(person);
+            label_state->setText("SEARCH");
+            break;
     }
     auto &[st, speed, rot] = res;
     state = st;
@@ -209,27 +218,71 @@ SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TO
 //        return (float)exp(-x*x/s);
 //    };
 
+    RoboCompVisualElementsPub::TData data;
+    auto [data_] = buffer.read_first();
+    if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
+    else data = data_.value();
+
+    auto persona = find_person_in_data(data.objects);
+    if (not persona.has_value()) {
+        return RetVal(STATE::SEARCH, 0.f, 0.f);
+    }
+
     auto distance = std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos")));
     lcdNumber_dist_to_person->display(distance);
+
+    static auto velocidad = params.MAX_ADV_SPEED;
 
     // check if the distance to the person is lower than a threshold
     if(distance < params.PERSON_MIN_DIST)
     {   qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
 
     /// TRACK   PUT YOUR CODE HERE
+    auto x = std::stof(person.attributes.at("x_pos"));
+    auto y = std::stof(person.attributes.at("y_pos"));
+    //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
+    double arct = atan2(x,y);
 
-    return RetVal(STATE::TRACK, 0, 0);
+    if(distance < params.PERSON_MIN_DIST*1.7) {
+        return RetVal(STATE::TRACK, velocidad - 250, arct);
+
+    }
+
+    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED, arct);
+
+
+
+
 }
 //
 SpecificWorker::RetVal SpecificWorker::wait(const RoboCompVisualElementsPub::TObject &person)
 {
+    auto x = std::stof(person.attributes.at("x_pos"));
+    auto y = std::stof(person.attributes.at("y_pos"));
+    //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
+    double arct = atan2(x,y);
     //qDebug() << __FUNCTION__ ;
     // check if the person is further than a threshold
     if(std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100)
         return RetVal(STATE::TRACK, 0.f, 0.f);
 
-    return RetVal(STATE::WAIT, 0.f, 0.f);
+    return RetVal(STATE::WAIT, 0.f, arct);
 
+}
+
+SpecificWorker::RetVal SpecificWorker::search(const RoboCompVisualElementsPub::TObject &person)
+{
+    RoboCompVisualElementsPub::TData data;
+    auto [data_] = buffer.read_first();
+    if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
+    else data = data_.value();
+
+    auto persona = find_person_in_data(data.objects);
+    if (persona.has_value()) {
+        return RetVal(STATE::TRACK, 0.f, 0.f);
+    }
+
+    return RetVal(STATE::SEARCH, params.MAX_ADV_SPEED, params.MAX_ROT_SPEED);
 }
 /**
  * @brief Determines the robot's behavior when following a wall.
