@@ -92,11 +92,14 @@ void SpecificWorker::compute()
 
     // get person and draw on viewer
     auto person = find_person_in_data(data.objects);
-    if(not person.has_value())
-    { qWarning() << __FUNCTION__ << QString::fromStdString(person.error()); return; }   // STOP THE ROBOT
+
+
+    // if(not person.has_value())
+    // { qWarning() << __FUNCTION__ << QString::fromStdString(person.error()); return; }   // STOP THE ROBOT
+
 
     // call state machine to track person
-    const auto &[adv, rot] = state_machine(person.value());
+    const auto &[adv, rot] = state_machine(person, ldata);
 
     // move the robot
     try{ omnirobot_proxy->setSpeedBase(0.f, adv, rot); }
@@ -105,7 +108,6 @@ void SpecificWorker::compute()
     lcdNumber_rot ->display(rot);
 
 
-    //state_machine(person.value());
 }
 
 
@@ -162,17 +164,19 @@ SpecificWorker::find_person_in_data(const std::vector<RoboCompVisualElementsPub:
 /// STATE  MACHINE
 //////////////////////////////////////////////////////////////////
 // State machine to track a person
-SpecificWorker::RobotSpeed SpecificWorker::state_machine(const RoboCompVisualElementsPub::TObject &person)
+SpecificWorker::RobotSpeed SpecificWorker::state_machine(Expect  &person, RoboCompLidar3D::TData &p_filter)
 {
     // call the appropriate state function
     RetVal res;
     if(pushButton_stop->isChecked())    // stop if buttom is pressed
         state = STATE::STOP;
 
+
+
     switch(state)
     {
         case STATE::TRACK:
-            res = track(person);
+            res = track(person, p_filter);
             label_state->setText("TRACK");
             break;
         case STATE::WAIT:
@@ -187,11 +191,62 @@ SpecificWorker::RobotSpeed SpecificWorker::state_machine(const RoboCompVisualEle
             res = search(person);
             label_state->setText("SEARCH");
             break;
+        case STATE::TURN:
+            res = turn(p_filter);
+            label_state->setText("TURN");
+            break;
     }
     auto &[st, speed, rot] = res;
     state = st;
     return {speed, rot};
 }
+
+SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
+    // Instantiate the random number generator and distribution
+    static std::mt19937 gen(rd());
+    static std::uniform_int_distribution<int> dist(0, 1);
+    static bool first_time = true; // Controla si es la primera vez que gira
+    static int sign = 1;
+
+    static std::random_device rd;
+    static std::uniform_int_distribution<int> distri(0, 4);
+
+
+    // Comprobar si la parte central estrecha de los puntos filtrados está libre para avanzar
+    auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
+    auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
+
+
+    // Encontrar el punto mínimo en la parte central
+    auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                      std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                          return a.distance2d < b.distance2d;
+                                      });
+
+    qDebug()<<"Te juro por dios que quiero girar";
+    // Si hay suficiente espacio en frente, decidir si hacer FOLLOW_WALL o SPIRAL
+    if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD) {
+                return RetVal(STATE::TRACK, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
+    }
+
+    // Continuar girando
+    auto min_point_all = std::ranges::min_element(points, [](auto &a, auto &b) { return a.distance2d < b.distance2d; });
+
+    // Si el phi del min_point_all es negativo, girar a la derecha; si no, a la izquierda. Si está cerca de cero, gira aleatoriamente
+    if (first_time) {
+        if (min_point_all->phi < 0.1 and min_point_all->phi > -0.1) {
+            sign = dist(gen);
+            sign = (sign == 0) ? -1 : 1;
+        } else {
+            sign = (min_point_all->phi > 0) ? -1 : 1; // Determinar dirección según el ángulo
+        }
+        first_time = false; // Marcar que ya ha girado la primera vez
+    }
+
+    return RetVal(STATE::TURN, 0.f, sign * params.MAX_ROT_SPEED);
+}
+
+
 /**
  * Analyzes the filtered points to determine whether to continue moving forward or to stop and turn.
  *
@@ -204,7 +259,7 @@ SpecificWorker::RobotSpeed SpecificWorker::state_machine(const RoboCompVisualEle
  * @return A `RetVal` tuple consisting of the state (`FORWARD` or `TURN`), speed, and rotation.
  */
  // State function to track a person
-SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TObject &person)
+SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TObject &person, RoboCompLidar3D::TData &points)
 {
     //qDebug() << __FUNCTION__;
     // variance of the gaussian function is set by the user giving a point xset where the function must be yset, and solving for s
@@ -217,54 +272,84 @@ SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TO
           // float s =
 //        return (float)exp(-x*x/s);
 //    };
+    auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
+    auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
+    if (offset_begin and offset_end) {
+        auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
+                                          std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
+                                              return a.distance2d < b.distance2d;
+                                          });
+        if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD) {
+            qDebug()<<"Voy a girar porque por aqui to negro";
+            return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
+        }
 
-    RoboCompVisualElementsPub::TData data;
-    auto [data_] = buffer.read_first();
-    if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
-    else data = data_.value();
 
-    auto persona = find_person_in_data(data.objects);
-    if (not persona.has_value()) {
-        return RetVal(STATE::SEARCH, 0.f, 0.f);
+        RoboCompVisualElementsPub::TData data;
+        auto [data_] = buffer.read_first();
+        if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
+        else data = data_.value();
+
+        auto persona = find_person_in_data(data.objects);
+        if (not persona.has_value()) {
+            return RetVal(STATE::SEARCH, 0.f, 0.f);
+        }
+
+
+
+        auto distance = std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos")));
+        lcdNumber_dist_to_person->display(distance);
+
+        static auto velocidad = params.MAX_ADV_SPEED;
+
+        // check if the distance to the person is lower than a threshold
+        if(distance < params.PERSON_MIN_DIST)
+        {   qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
+
+        /// TRACK   PUT YOUR CODE HERE
+        auto x = std::stof(person.attributes.at("x_pos"));
+        auto y = std::stof(person.attributes.at("y_pos"));
+        //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
+        double arct = atan2(x,y);
+
+        if(distance < params.PERSON_MIN_DIST*1.7) {
+            return RetVal(STATE::TRACK, velocidad - 250, arct);
+
+        }
+
+        return RetVal(STATE::TRACK, params.MAX_ADV_SPEED, arct);
     }
-
-    auto distance = std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos")));
-    lcdNumber_dist_to_person->display(distance);
-
-    static auto velocidad = params.MAX_ADV_SPEED;
-
-    // check if the distance to the person is lower than a threshold
-    if(distance < params.PERSON_MIN_DIST)
-    {   qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
-
-    /// TRACK   PUT YOUR CODE HERE
-    auto x = std::stof(person.attributes.at("x_pos"));
-    auto y = std::stof(person.attributes.at("y_pos"));
-    //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
-    double arct = atan2(x,y);
-
-    if(distance < params.PERSON_MIN_DIST*1.7) {
-        return RetVal(STATE::TRACK, velocidad - 250, arct);
-
-    }
-
-    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED, arct);
-
-
 
 
 }
 //
 SpecificWorker::RetVal SpecificWorker::wait(const RoboCompVisualElementsPub::TObject &person)
 {
+    RoboCompVisualElementsPub::TData data;
+    auto [data_] = buffer.read_first();
+    if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::SEARCH, 0.f, 0.f);; }
+    else data = data_.value();
+
     auto x = std::stof(person.attributes.at("x_pos"));
     auto y = std::stof(person.attributes.at("y_pos"));
+
     //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
     double arct = atan2(x,y);
     //qDebug() << __FUNCTION__ ;
+
+    auto persona = find_person_in_data(data.objects);
+    if (not persona.has_value()) {
+        qDebug() << " NOOOOOOOOOOOOO HAY PERSONA";
+        return RetVal(STATE::SEARCH, 0.f, 0.f);
+    }
+
     // check if the person is further than a threshold
-    if(std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100)
+    if(std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100){
+        qDebug()<<"Vamos a comprobar distancia con persona, como no está cerca  nos vamos a track";
         return RetVal(STATE::TRACK, 0.f, 0.f);
+    }
+
+     qDebug() << "seguimos en wait poeque estoy mu cerca";
 
     return RetVal(STATE::WAIT, 0.f, arct);
 

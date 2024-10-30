@@ -63,7 +63,7 @@ class SpecificWorker : public GenericWorker
             float ROBOT_LENGTH = 480;  // mm
             float MAX_ADV_SPEED = 1500; // mm/s
             float MAX_ROT_SPEED = 2; // rad/s
-            float STOP_THRESHOLD = 700; // mm
+            float STOP_THRESHOLD = 1000; // mm
             float ADVANCE_THRESHOLD = ROBOT_WIDTH * 3; // mm
             float LIDAR_FRONT_SECTION = 0.2; // rads, aprox 12 degrees
             // person
@@ -79,16 +79,19 @@ class SpecificWorker : public GenericWorker
         // state machine
         enum class STATE
         {
-            TRACK, STOP, WAIT, SEARCH
+            TRACK, STOP, WAIT, SEARCH, TURN
         };
         STATE state = STATE::TRACK;
         using RetVal = std::tuple<STATE, float, float>;
         using RobotSpeed = std::tuple<float, float>;
-        RetVal track(const RoboCompVisualElementsPub::TObject &person);
-        RetVal wait(const RoboCompVisualElementsPub::TObject &person);
+        using Expect = std::expected<RoboCompVisualElementsPub::TObject, std::string>;
+
+        RetVal turn(auto &filtered_points);
+        RetVal track(Expect &person, RoboCompLidar3D::TData &filtered_points);
+        RetVal wait(Expect &person);
         RetVal stop();
-        RetVal search(const RoboCompVisualElementsPub::TObject &person);
-        RobotSpeed state_machine(const RoboCompVisualElementsPub::TObject &person);
+        RetVal search(Expect &person);
+        RobotSpeed state_machine(Expect &person, RoboCompLidar3D::TData &filtered_points);
 
         // lidar
         RoboCompLidar3D::TData read_lidar_bpearl();
