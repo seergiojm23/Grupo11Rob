@@ -67,7 +67,7 @@ class SpecificWorker : public GenericWorker
             float ADVANCE_THRESHOLD = ROBOT_WIDTH * 3; // mm
             float LIDAR_FRONT_SECTION = 0.2; // rads, aprox 12 degrees
             // person
-            float PERSON_MIN_DIST = 800; // mm 800 inicial
+            float PERSON_MIN_DIST = 1000; // mm 800 inicial
 
             std::string LIDAR_NAME_LOW = "bpearl";
             std::string LIDAR_NAME_HIGH = "helios";
@@ -86,12 +86,12 @@ class SpecificWorker : public GenericWorker
         using RobotSpeed = std::tuple<float, float>;
         using Expect = std::expected<RoboCompVisualElementsPub::TObject, std::string>;
 
-        RetVal turn(auto &filtered_points);
-        RetVal track(Expect &person, RoboCompLidar3D::TData &filtered_points);
-        RetVal wait(Expect &person);
+        RetVal turn(const auto &filtered_points);
+        RetVal track(const Expect &person, const RoboCompLidar3D::TPoints &filtered_points);
+        RetVal wait(const Expect &person);
         RetVal stop();
-        RetVal search(Expect &person);
-        RobotSpeed state_machine(Expect &person, RoboCompLidar3D::TData &filtered_points);
+        RetVal search(const Expect &person);
+        RobotSpeed state_machine(const Expect &person,const RoboCompLidar3D::TPoints &filtered_points);
 
         // lidar
         RoboCompLidar3D::TData read_lidar_bpearl();

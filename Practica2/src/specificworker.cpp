@@ -99,7 +99,7 @@ void SpecificWorker::compute()
 
 
     // call state machine to track person
-    const auto &[adv, rot] = state_machine(person, ldata);
+    const auto &[adv, rot] = state_machine(person, ldata_helios.points);
 
     // move the robot
     try{ omnirobot_proxy->setSpeedBase(0.f, adv, rot); }
@@ -164,7 +164,7 @@ SpecificWorker::find_person_in_data(const std::vector<RoboCompVisualElementsPub:
 /// STATE  MACHINE
 //////////////////////////////////////////////////////////////////
 // State machine to track a person
-SpecificWorker::RobotSpeed SpecificWorker::state_machine(Expect  &person, RoboCompLidar3D::TData &p_filter)
+SpecificWorker::RobotSpeed SpecificWorker::state_machine(const Expect  &person, const RoboCompLidar3D::TPoints &p_filter)
 {
     // call the appropriate state function
     RetVal res;
@@ -201,7 +201,7 @@ SpecificWorker::RobotSpeed SpecificWorker::state_machine(Expect  &person, RoboCo
     return {speed, rot};
 }
 
-SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
+SpecificWorker::RetVal SpecificWorker::turn(const auto &points) {
     // Instantiate the random number generator and distribution
     static std::mt19937 gen(rd());
     static std::uniform_int_distribution<int> dist(0, 1);
@@ -223,7 +223,7 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
                                           return a.distance2d < b.distance2d;
                                       });
 
-    qDebug()<<"Te juro por dios que quiero girar";
+
     // Si hay suficiente espacio en frente, decidir si hacer FOLLOW_WALL o SPIRAL
     if (min_point != std::end(points) and min_point->distance2d > params.ADVANCE_THRESHOLD) {
                 return RetVal(STATE::TRACK, 0.f, 0.f); // La primera vez va a FOLLOW_WALL
@@ -259,7 +259,7 @@ SpecificWorker::RetVal SpecificWorker::turn(auto &points) {
  * @return A `RetVal` tuple consisting of the state (`FORWARD` or `TURN`), speed, and rotation.
  */
  // State function to track a person
-SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TObject &person, RoboCompLidar3D::TData &points)
+SpecificWorker::RetVal SpecificWorker::track(const Expect &person, const RoboCompLidar3D::TPoints &points)
 {
     //qDebug() << __FUNCTION__;
     // variance of the gaussian function is set by the user giving a point xset where the function must be yset, and solving for s
@@ -280,7 +280,6 @@ SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TO
                                               return a.distance2d < b.distance2d;
                                           });
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD) {
-            qDebug()<<"Voy a girar porque por aqui to negro";
             return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         }
 
@@ -295,80 +294,85 @@ SpecificWorker::RetVal SpecificWorker::track(const RoboCompVisualElementsPub::TO
             return RetVal(STATE::SEARCH, 0.f, 0.f);
         }
 
+        auto distance = std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos")));
 
-
-        auto distance = std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos")));
         lcdNumber_dist_to_person->display(distance);
 
-        static auto velocidad = params.MAX_ADV_SPEED;
+        auto velocidad = 0.55 * distance;
 
         // check if the distance to the person is lower than a threshold
         if(distance < params.PERSON_MIN_DIST)
         {   qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
 
         /// TRACK   PUT YOUR CODE HERE
-        auto x = std::stof(person.attributes.at("x_pos"));
-        auto y = std::stof(person.attributes.at("y_pos"));
+        auto x = std::stof(person.value().attributes.at("x_pos"));
+        auto y = std::stof(person.value().attributes.at("y_pos"));
         //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
         double arct = atan2(x,y);
 
+        /*
         if(distance < params.PERSON_MIN_DIST*1.7) {
-            return RetVal(STATE::TRACK, velocidad - 250, arct);
-
+            return RetVal(STATE::TRACK, velocidad, arct);
         }
+        */
 
-        return RetVal(STATE::TRACK, params.MAX_ADV_SPEED, arct);
+        return RetVal(STATE::TRACK, velocidad, arct);
     }
 
 
 }
 //
-SpecificWorker::RetVal SpecificWorker::wait(const RoboCompVisualElementsPub::TObject &person)
+SpecificWorker::RetVal SpecificWorker::wait(const Expect &person)
 {
+
+
     RoboCompVisualElementsPub::TData data;
     auto [data_] = buffer.read_first();
     if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::SEARCH, 0.f, 0.f);; }
     else data = data_.value();
 
-    auto x = std::stof(person.attributes.at("x_pos"));
-    auto y = std::stof(person.attributes.at("y_pos"));
+
+
+    if (not person.has_value()) {
+        return RetVal(STATE::SEARCH, 0.f, 0.f);
+    }
+
+    auto x = std::stof(person.value().attributes.at("x_pos"));
+    auto y = std::stof(person.value().attributes.at("y_pos"));
 
     //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
     double arct = atan2(x,y);
     //qDebug() << __FUNCTION__ ;
 
-    auto persona = find_person_in_data(data.objects);
-    if (not persona.has_value()) {
-        qDebug() << " NOOOOOOOOOOOOO HAY PERSONA";
-        return RetVal(STATE::SEARCH, 0.f, 0.f);
-    }
 
     // check if the person is further than a threshold
-    if(std::hypot(std::stof(person.attributes.at("x_pos")), std::stof(person.attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100){
-        qDebug()<<"Vamos a comprobar distancia con persona, como no está cerca  nos vamos a track";
+    if(std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100){
         return RetVal(STATE::TRACK, 0.f, 0.f);
     }
 
-     qDebug() << "seguimos en wait poeque estoy mu cerca";
 
     return RetVal(STATE::WAIT, 0.f, arct);
 
 }
 
-SpecificWorker::RetVal SpecificWorker::search(const RoboCompVisualElementsPub::TObject &person)
+SpecificWorker::RetVal SpecificWorker::search(const Expect &person)
 {
     RoboCompVisualElementsPub::TData data;
     auto [data_] = buffer.read_first();
     if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
     else data = data_.value();
 
-    auto persona = find_person_in_data(data.objects);
-    if (persona.has_value()) {
+    if (person.has_value()) {
         return RetVal(STATE::TRACK, 0.f, 0.f);
     }
 
-    return RetVal(STATE::SEARCH, params.MAX_ADV_SPEED, params.MAX_ROT_SPEED);
+    //Girar izquierda
+    float rotacion = -0.8 * params.MAX_ROT_SPEED;
+
+    return RetVal(STATE::SEARCH, 0, rotacion);
 }
+
+
 /**
  * @brief Determines the robot's behavior when following a wall.
  *
