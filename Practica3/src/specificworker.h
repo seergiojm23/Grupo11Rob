@@ -61,13 +61,13 @@ class SpecificWorker : public GenericWorker
         {
             float ROBOT_WIDTH = 460;  // mm
             float ROBOT_LENGTH = 480;  // mm
-            float MAX_ADV_SPEED = 100; // mm/s
+            float MAX_ADV_SPEED = 1500; // mm/s
             float MAX_ROT_SPEED = 2; // rad/s
-            float STOP_THRESHOLD = 700; // mm
+            float STOP_THRESHOLD = 1000; // mm
             float ADVANCE_THRESHOLD = ROBOT_WIDTH * 3; // mm
             float LIDAR_FRONT_SECTION = 0.2; // rads, aprox 12 degrees
             // person
-            float PERSON_MIN_DIST = 1100; // mm
+            float PERSON_MIN_DIST = 1000; // mm
 
             std::string LIDAR_NAME_LOW = "bpearl";
             std::string LIDAR_NAME_HIGH = "helios";
@@ -126,9 +126,9 @@ class SpecificWorker : public GenericWorker
         rc::Room_Detector room_detector;
         void update_room_model(const auto &points, QGraphicsScene *scene);
         rc::Room room_model;
-        std::tuple<std::vector<Eigen::Vector2f>, std::vector<QLineF>> remove_wall_points(const auto &helios, const auto &bpearl);
+        std::vector<Eigen::Vector2f> remove_wall_points(const std::vector<QLineF> &lines, const auto &helios);
         std::vector<QPolygonF> get_walls_as_polygons(const std::vector<QLineF> &lines, float robot_width);
-        std::vector<QLineF> detect_wall_lines(const vector<Eigen::Vector2f> &points);
+        std::vector<QLineF> detect_wall_lines(const vector<Eigen::Vector2f> &points, QGraphicsScene *scene);
 
         // robot
         void stop_robot();

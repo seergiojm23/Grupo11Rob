@@ -84,14 +84,14 @@ void SpecificWorker::compute()
     //draw_lidar(ldata.points, &viewer->scene);
 
     /// detect wall lines
-    auto lines = detect_wall_lines(helios_points);
+    auto lines = detect_wall_lines(helios_points, &viewer->scene);
 
     /// remove wall lines
-    auto new_data = remove_wall_points(helios_points, bpearl_points);
-    auto &[filtered_points, walls_polys] = new_data;
+    auto filtered_points = remove_wall_points(lines, bpearl_points);
+
 
     /// get walls as polygons
-    std::vector<QPolygonF> obstacles = get_walls_as_polygons(walls_polys, params.ROBOT_WIDTH/2);
+    std::vector<QPolygonF> obstacles = get_walls_as_polygons(lines, params.ROBOT_WIDTH/2);
 
     /// get obstacles as polygons using DBSCAN
     auto obs = rc::dbscan(filtered_points, params.ROBOT_WIDTH, 2, params.ROBOT_WIDTH);
@@ -177,6 +177,16 @@ std::vector<Eigen::Vector2f> SpecificWorker::read_lidar_helios()
     catch(const Ice::Exception &e){std::cout << e << std::endl;}
     return {};
 }
+
+std::vector<QLineF> SpecificWorker::detect_wall_lines(const vector<Eigen::Vector2f> &points, QGraphicsScene *scene)
+{
+        std::vector<QLineF> lines;
+        const auto &[lineas, subrayado1, subrayado2, subrayado3] = room_detector.compute_features(points, scene);
+        for(const auto &l: lineas)
+            lines.emplace_back(l.second);
+        return lines;
+}
+
  /* Removes points that are on the walls from the given set of points.
  *
  * This function filters out points that are on the walls based on the room model.
@@ -186,15 +196,32 @@ std::vector<Eigen::Vector2f> SpecificWorker::read_lidar_helios()
  * param points The set of points to be filtered.
  * return A vector of polygons representing the filtered points.
  */
-std::tuple<std::vector<Eigen::Vector2f>, std::vector<QLineF>>
-        SpecificWorker::remove_wall_points(const auto &helios, const auto &bpearl)
+std::vector<Eigen::Vector2f>
+        SpecificWorker::remove_wall_points(const std::vector<QLineF> &lines, const auto &helios)
 {
-    std::vector<Eigen::Vector2f> points_inside;
-    std::vector<QLineF> ls;
+    std::vector<Eigen::Vector2f> puntos_nuevos;
 
-    // your code here
+    for(const auto &point: helios)
+    {
+        bool exito = true;
+        for(const auto &line: lines)
+        {
+            //Calcular distancia
+            auto numerador = abs( (line.x2()-line.x1()) * (line.y1()-point.y()) - (line.x1()-point.x()) * (line.y2()-line.y1()) );
+            auto denominador = sqrt( (line.x2()-line.x1()) * (line.x2()-line.x1()) + (line.y2()-line.y1()) * (line.y2()-line.y1()) );
+            auto distancia = numerador / denominador;
+            //si distancia < umbral
+            if(distancia < params.ROBOT_WIDTH/2)
+            {
+                exito = false;
+                break;
+            }
+        }
+        if(exito)
+            puntos_nuevos.emplace_back(point.x(), point.y());
+    }
 
-    return std::make_tuple(points_inside, ls);
+    return puntos_nuevos;
 }
 std::expected<RoboCompVisualElementsPub::TObject, std::string>
 SpecificWorker::find_person_in_data(const std::vector<RoboCompVisualElementsPub::TObject> &objects)
@@ -258,14 +285,7 @@ std::vector<QPolygonF> SpecificWorker::get_walls_as_polygons(const vector<QLineF
     }
     return obstacles;
 }
-std::vector<QLineF> SpecificWorker::detect_wall_lines(const vector<Eigen::Vector2f> &points)
-{
-    std::vector<QLineF> lines;
 
-    // YOUR CODE
-
-    return lines;
-}
 //////////////////////////////////////////////////////////////////
 /// STATE  MACHINE
 //////////////////////////////////////////////////////////////////
