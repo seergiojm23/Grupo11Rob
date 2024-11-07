@@ -375,12 +375,36 @@ SpecificWorker::RetVal SpecificWorker::wait(const  TPerson &tp_person)
         return RetVal(STATE::WAIT, 0.f, 0.f);
     }
 
+    auto x = std::stof(tp_person.value().attributes.at("x_pos"));
+    auto y = std::stof(tp_person.value().attributes.at("y_pos"));
+
+    //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
+    double arct = atan2(x,y);
+
     if(std::hypot(std::stof(tp_person.value().attributes.at("x_pos")), std::stof(tp_person.value().attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100)
         return RetVal(STATE::TRACK, 0.f, 0.f);
 
-    return RetVal(STATE::WAIT, 0.f, 0.f);
+    return RetVal(STATE::WAIT, 0.f, arct);
 
 }
+
+SpecificWorker::RetVal SpecificWorker::search(const TPerson &person)
+{
+    RoboCompVisualElementsPub::TData data;
+    auto [data_] = buffer.read_first();
+    if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
+    else data = data_.value();
+
+    if (person.has_value()) {
+        return RetVal(STATE::TRACK, 0.f, 0.f);
+    }
+
+    //Girar izquierda
+    float rotacion = -0.8 * params.MAX_ROT_SPEED;
+
+    return RetVal(STATE::SEARCH, 0, rotacion);
+}
+
 /**
  * @brief Determines the robot's behavior when following a wall.
  *
@@ -397,7 +421,7 @@ SpecificWorker::RetVal SpecificWorker::stop()   // TODO: release to let the joys
     //qDebug() << __FUNCTION__ ;
     // Check the status of the pushButton_stop
     if(not pushButton_stop->isChecked())
-        return RetVal(STATE::TRACK, 0.f, 0.f);
+        return RetVal(STATE::WAIT, 0.f, 0.f);
 
     return RetVal (STATE::STOP, 0.f, 0.f);
 }

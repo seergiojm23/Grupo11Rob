@@ -11,6 +11,7 @@
 #include <vector>
 #include <map>
 #include <QVector2D>
+#include <cppitertools/sliding_window.hpp>
 
 namespace rc
 {
@@ -77,8 +78,32 @@ namespace rc
             for (const auto &p: hull)
                 poly << QPointF(p.x, p.y);
 
+            //Copio primero y segundo al final
+            QPolygonF new_poly;
+            poly << poly.first() << poly[1]; //TODO: Check poly > 2
+            for(const auto &p : iter::sliding_window(poly, 3))
+            {
+                const auto p1 = Eigen::Vector2f{p[0].x(), p[0].y()};
+                const auto p2 = Eigen::Vector2f{p[1].x(), p[1].y()};
+                const auto p3 = Eigen::Vector2f{p[2].x(), p[2].y()};
+
+                Eigen::Vector2f v1 = (p1 - p2).normalized();
+                Eigen::Vector2f v2 = (p3 - p2).normalized();
+                Eigen::Vector2f bisectriz = (v1 + v2).normalized();
+
+                Eigen::Vector2f np2 = p2 - robot_width * bisectriz;
+                new_poly << QPointF {np2.x(), np2.y()};
+
+            }
+            list_poly.emplace_back(new_poly);
+
+
+
+
+
+
             // enlarge the polygon to account for the robot size
-            QPolygonF exp_poly;
+            /*QPolygonF exp_poly;
             for(int i = 0; i < poly.size(); ++i)
             {
                 const QPointF p1 = poly[i];
@@ -91,8 +116,8 @@ namespace rc
                 QPointF newP1(p1.x() + robot_width * std::cos(angle),p1.y() + robot_width * std::sin(angle));
                 QPointF newP2(p2.x() + robot_width * std::cos(angle),p2.y() + robot_width * std::sin(angle));
                 exp_poly << newP1 << newP2;
-            }
-            list_poly.emplace_back(exp_poly);
+            }*/
+            //list_poly.emplace_back(exp_poly);
         }
         return list_poly;
     };
