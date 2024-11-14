@@ -107,6 +107,7 @@ void SpecificWorker::compute()
 
     /// find obstacles
     auto obstacles = rc::dbscan(bpearl, params.ROBOT_WIDTH, 2);
+    enlarge_polygons(obstacles, params.ROBOT_WIDTH/2);
 
     /// check if there is new YOLO data in buffer
     std::expected<RoboCompVisualElementsPub::TObject, std::string> tp_person = std::unexpected("No person found");
@@ -143,10 +144,9 @@ void SpecificWorker::compute()
     const auto &[adv, rot] = state_machine(path);
 
     // plot on UI
-    if(tp_person)
+    if(tp_person and path.size() > 0)
     {
-        float d = std::hypot(std::stof(tp_person.value().attributes.at("x_pos")),
-                                 std::stof(tp_person.value().attributes.at("y_pos")));
+        float d = distance_to_person_along_path(path);
         plot_distance(running_average(d) - params.PERSON_MIN_DIST);
         lcdNumber_dist_to_person->display(d);
         lcdNumber_angle_to_person->display(atan2(std::stof(tp_person.value().attributes.at("x_pos")),
@@ -376,27 +376,25 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
         return (float)exp(-x*x/s);
     };
 
-    if(path.empty())
-    { /* qWarning() << __FUNCTION__ << "No person found"; */ return RetVal(STATE::SEARCH, 0.f, 0.f); }
+    // if(path.empty())
+    // { /* qWarning() << __FUNCTION__ << "No person found"; */ return RetVal(STATE::SEARCH, 0.f, 0.f); }
 
-    for (const auto &p: iter::sliding_window(path, 2))
-    {
-        const auto p1 = Eigen::Vector2f{p[0].x(), p[0].y()};
-        const auto p2 = Eigen::Vector2f{p[1].x(), p[1].y()};
-        const auto diferencia = (p2 - p1).normalized();
-        //std::accumulate()
-    }
-
-
-    // auto distance = std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos")));
-    lcdNumber_dist_to_person->display(distance);
+    float dist = distance_to_person_along_path(path);
+    lcdNumber_dist_to_person->display(dist);
 
     // check if the distance to the person is lower than a threshold
-    if(distance < params.PERSON_MIN_DIST)
-    { qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
+
+    qDebug () << "La distancia es " << dist << path.size();
+    if(dist < params.PERSON_MIN_DIST)
+     { qWarning() << __FUNCTION__ << "Distance to person lower than threshold";
+        return RetVal(STATE::WAIT, 0.f, 0.f);
+    }
 
     // angle error is the angle between the robot and the person. It has to be brought to zero
-    float angle_error = atan2(stof(person.value().attributes.at("x_pos")), stof(person.value().attributes.at("y_pos")));
+    float lastElementX = path[1].x();
+    float lastElementY = path[1].y();
+
+    float angle_error = atan2f(lastElementX, lastElementY);
     float rot_speed = params.k1 * angle_error + params.k2 * (angle_error-ant_angle_error);
     ant_angle_error = angle_error;
     // rot_brake is a value between 0 and 1 that decreases the speed when the robot is not facing the person
@@ -404,7 +402,7 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
     // acc_distance is the distance given to the robot to reach again the maximum speed
     float acc_distance = params.acc_distance_factor * params.ROBOT_WIDTH;
     // advance brake is a value between 0 and 1 that decreases the speed when the robot is too close to the person
-    float adv_brake = std::clamp(distance * 1.f/acc_distance - (params.PERSON_MIN_DIST / acc_distance), 0.f, 1.f);
+    float adv_brake = std::clamp(dist * 1.f/acc_distance - (params.PERSON_MIN_DIST / acc_distance), 0.f, 1.f);
     return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake, rot_speed);
 }
 //
@@ -413,8 +411,11 @@ SpecificWorker::RetVal SpecificWorker::wait(const std::vector<Eigen::Vector2f> &
     if(path.empty())
     {  qWarning() << __FUNCTION__ << "No person found"; return RetVal(STATE::TRACK, 0.f, 0.f); }
 
+    float lastElementX = path[path.size() - 1].x();
+    float lastElementY = path[path.size() - 1].y();
+
     // check if the person is further than a threshold
-    if(std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100)
+    if(std::hypot(lastElementX, lastElementY) > params.PERSON_MIN_DIST + 100)
         return RetVal(STATE::TRACK, 0.f, 0.f);
 
     return RetVal(STATE::WAIT, 0.f, 0.f);
@@ -438,6 +439,18 @@ SpecificWorker::RetVal SpecificWorker::stop()
 
     return RetVal (STATE::STOP, 0.f, 0.f);
 }
+
+float SpecificWorker::distance_to_person_along_path(const std::vector<Eigen::Vector2f> &path)
+{
+    return std::accumulate(std::begin(path), std::end(path), 0.f, [](float a, const Eigen::Vector2f &b)
+        {
+            static Eigen::Vector2f ant{0.f, 0.f};
+            float aux = a + (b-ant).norm();
+            ant = b;
+            return aux;
+        });
+}
+
 /**
  * Draws LIDAR points onto a QGraphicsScene.
  *
