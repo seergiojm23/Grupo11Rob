@@ -33,14 +33,6 @@
 #include <Eigen/Dense>
 #include "abstract_graphic_viewer/abstract_graphic_viewer.h"
 
-// Definir las dimensiones de la cuadrícula
-constexpr int GRID_WIDTH_MM = 5000;
-constexpr int GRID_HEIGHT_MM = 5000;
-constexpr int CELL_SIZE_MM = 100;  // Tamaño de la celda en milímetros
-
-// Calcular el número de celdas en cada dimensión
-constexpr int NUM_CELLS_X = GRID_WIDTH_MM / CELL_SIZE_MM;
-constexpr int NUM_CELLS_Y = GRID_HEIGHT_MM / CELL_SIZE_MM;
 
 class SpecificWorker : public GenericWorker
 {
@@ -87,17 +79,26 @@ class SpecificWorker : public GenericWorker
 	Params params;
 
 	// Definir el enum para los tipos de celda
-	enum class CellType {
+	enum class State {
 		Empty,      // Celda vacía
 		Occupied,   // Celda ocupada
 	};
 
 	// Definir la estructura de la celda
 	struct TCell {
-		CellType type;  // Tipo de celda (usamos el enum CellType)
+		State state;  // Tipo de celda (usamos el enum CellType)
+		QGraphicsRectItem *item;
 	};
 
 	// Declarar la cuadrícula como un arreglo 2D de celdas
+	// Definir las dimensiones de la cuadrícula
+	static constexpr int GRID_WIDTH_MM = 5000;
+	static constexpr int GRID_HEIGHT_MM = 5000;
+	static constexpr int CELL_SIZE_MM = 100;  // Tamaño de la celda en milímetros
+
+	// Calcular el número de celdas en cada dimensión
+	static constexpr int NUM_CELLS_X = GRID_WIDTH_MM / CELL_SIZE_MM;
+	static constexpr int NUM_CELLS_Y = GRID_HEIGHT_MM / CELL_SIZE_MM;
 	std::array<std::array<TCell, NUM_CELLS_X>, NUM_CELLS_Y> grid;
 
 		// lidar
@@ -110,7 +111,8 @@ class SpecificWorker : public GenericWorker
 
 		TCell getCell(auto x, auto y);
 		void setCell(auto x, auto y, TCell cell);
-		void recorrerLidar(std::vector<Eigen::Vector2f> &bpearl);
+		QPointF get_lidar_point(int i, int j);
+		std::tuple<int,int>  get_grid_index(float x, float y);
 
 
 };

@@ -17,6 +17,7 @@
  *    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "specificworker.h"
+#include <cppitertools/enumerate.hpp>
 
 /**
 * \brief Default constructor
@@ -68,9 +69,17 @@ void SpecificWorker::initialize()
 		viewer = new AbstractGraphicViewer(this->frame, params.GRID_MAX_DIM);
 		auto [r, e] = viewer->add_robot(params.ROBOT_WIDTH, params.ROBOT_LENGTH, 0, 100, QColor("Blue"));
 		robot_draw = r;
-		viewer->setStyleSheet("background-color: lightGray;");
+		//viewer->setStyleSheet("background-color: lightGray;");
 		this->resize(800, 700);
+		viewer->show();
 
+		for(auto &&[i, row]: grid | iter::enumerate)
+			for (auto &&[j, celda] : row | iter::enumerate)
+			{
+				celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
+					 QPen(QColor("Blue"), 20), QBrush(QColor("LightGray")));
+				celda.item->setPos(get_lidar_point(i, j));
+			}
 		#ifdef HIBERNATION_ENABLED
 			hibernationChecker.start(500);
 		#endif
@@ -87,7 +96,13 @@ void SpecificWorker::compute()
 	//read bpearl (lower) lidar and draw
 	auto ldata_bpearl = read_lidar_bpearl();
 	if(ldata_bpearl.empty()) { qWarning() << __FUNCTION__ << "Empty bpearl lidar data"; return; };
+	qDebug()<<ldata_bpearl.size();
 	draw_lidar(ldata_bpearl, &viewer->scene);
+
+
+	const auto &[i,j] = get_grid_index(1000, 1000);
+	qDebug()<<i<<j;
+	grid[i][j].item->setBrush(QBrush(QColor("Magenta")));
 
 }
 
@@ -156,23 +171,25 @@ void SpecificWorker::setCell(auto x, auto y, TCell value)
 	grid[x][y] = value;
 }
 
-void SpecificWorker::recorrerLidar(std::vector<Eigen::Vector2f> &bpearl)
+QPointF SpecificWorker::get_lidar_point(int i, int j)
 {
-	TCell currentCell;
-	//recorremosLidar
-	if(bpearl.empty()) { return; }
 
-	//La 0,0 es la pos del robot que siempre corresponde al centro de la cuadricula
-	for(const auto &p: bpearl)
-	{
-		auto x = p.x();
-		auto y = p.y();
-		currentCell = getCell(x, y);
-		//operar celda
-		setCell(x, y, currentCell);
-	}
+	float x = GRID_WIDTH_MM/NUM_CELLS_X * i - (GRID_WIDTH_MM/2);
+	float y = GRID_WIDTH_MM/NUM_CELLS_Y * j - (GRID_WIDTH_MM/2);
 
+	return QPointF(x, y);
 }
+
+std::tuple<int,int> SpecificWorker::get_grid_index(float x, float y)
+{
+	int i = (static_cast<float>(NUM_CELLS_X)/GRID_WIDTH_MM)*x + (NUM_CELLS_X/2);
+	int j = (static_cast<float>(NUM_CELLS_Y)/GRID_WIDTH_MM)*y + (NUM_CELLS_Y/2);
+	qDebug()<<i<<j<<x<<y;
+
+
+	return std::make_tuple(i, j);
+}
+
 
 void SpecificWorker::emergency()
 {
