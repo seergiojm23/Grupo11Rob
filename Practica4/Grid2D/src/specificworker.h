@@ -82,6 +82,7 @@ class SpecificWorker : public GenericWorker
 	enum class State {
 		Empty,      // Celda vacía
 		Occupied,   // Celda ocupada
+		Unknown,		//Desconocida
 	};
 
 	// Definir la estructura de la celda

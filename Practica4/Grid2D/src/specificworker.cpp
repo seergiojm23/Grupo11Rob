@@ -18,6 +18,7 @@
  */
 #include "specificworker.h"
 #include <cppitertools/enumerate.hpp>
+#include <cppitertools/range.hpp>
 
 /**
 * \brief Default constructor
@@ -77,8 +78,9 @@ void SpecificWorker::initialize()
 			for (auto &&[j, celda] : row | iter::enumerate)
 			{
 				celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
-					 QPen(QColor("Blue"), 20), QBrush(QColor("LightGray")));
+					 QPen(QColor("Blue"), 20), QBrush(QColor("Black")));
 				celda.item->setPos(get_lidar_point(i, j));
+				celda.state = State::Unknown;
 			}
 		#ifdef HIBERNATION_ENABLED
 			hibernationChecker.start(500);
@@ -93,16 +95,60 @@ void SpecificWorker::initialize()
 
 void SpecificWorker::compute()
 {
+
 	//read bpearl (lower) lidar and draw
 	auto ldata_bpearl = read_lidar_bpearl();
 	if(ldata_bpearl.empty()) { qWarning() << __FUNCTION__ << "Empty bpearl lidar data"; return; };
 	qDebug()<<ldata_bpearl.size();
 	draw_lidar(ldata_bpearl, &viewer->scene);
 
-
+	//Poner color celda
+	/*
 	const auto &[i,j] = get_grid_index(1000, 1000);
 	qDebug()<<i<<j;
 	grid[i][j].item->setBrush(QBrush(QColor("Magenta")));
+	*/
+
+	std::tuple<int, int> index;
+	//int i = 0;
+
+
+	for(auto &&[i, row]: grid | iter::enumerate)
+		for (auto &&[j, celda] : row | iter::enumerate)
+		{
+			celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
+				 QPen(QColor("Blue"), 20), QBrush(QColor("Black")));
+			celda.item->setPos(get_lidar_point(i, j));
+			celda.state = State::Unknown;
+		}
+
+	for (const auto &p : ldata_bpearl)
+	{
+		auto salto = p.norm() / CELL_SIZE_MM; //NUMERO DE CELDAS EN ESA DISTANCIA
+		auto r = p.normalized();
+		for (const auto s : iter::range(0.f, p.norm(), salto))
+		{
+			auto step = r*s;
+			index = get_grid_index(step.x(), step.y());
+			const auto &[i, j] = index;
+			// celda de index = free, white
+
+			if (i > 0 && j > 0 && i < NUM_CELLS_X && j < NUM_CELLS_Y)
+			{
+				grid[i][j].state = State::Empty;
+				grid[i][j].item->setBrush(QBrush(QColor("White")));
+			}
+		}
+		//celda de p occupied and red
+
+		index = get_grid_index(p.x(), p.y());
+		const auto &[i, j] = index;
+
+		if (i > 0 && j > 0 && i < NUM_CELLS_X && j < NUM_CELLS_Y) {
+			grid[i][j].item->setBrush(QBrush(QColor("Red")));
+			grid[i][j].state = State::Occupied;
+		}
+	}
 
 }
 
