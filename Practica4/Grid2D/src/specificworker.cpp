@@ -17,6 +17,8 @@
  *    along with RoboComp.  If not, see <http://www.gnu.org/licenses/>.
  */
 #include "specificworker.h"
+
+#include <queue>
 #include <cppitertools/enumerate.hpp>
 #include <cppitertools/range.hpp>
 
@@ -58,6 +60,11 @@ bool SpecificWorker::setParams(RoboCompCommonBehavior::ParameterList params)
 
 void SpecificWorker::initialize()
 {
+	//Cuestionable
+	static bool initialized = false; // Verifica si ya se inicializó
+	if (initialized) return;
+	initialized = true;
+	//Fin Cuestionable
 	std::cout << "Initialize worker" << std::endl;
 	if(this->startup_check_flag)
 	{
@@ -65,7 +72,6 @@ void SpecificWorker::initialize()
 	}
 	else
 	{
-
 		// Viewer
 		viewer = new AbstractGraphicViewer(this->frame, params.GRID_MAX_DIM);
 		auto [r, e] = viewer->add_robot(params.ROBOT_WIDTH, params.ROBOT_LENGTH, 0, 100, QColor("Blue"));
@@ -78,7 +84,7 @@ void SpecificWorker::initialize()
 			for (auto &&[j, celda] : row | iter::enumerate)
 			{
 				celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
-					 QPen(QColor("Blue"), 20), QBrush(QColor("Black")));
+					 QPen(QColor("White"), 20), QBrush(QColor("Light Gray")));
 				celda.item->setPos(get_lidar_point(i, j));
 				celda.state = State::Unknown;
 			}
@@ -88,10 +94,9 @@ void SpecificWorker::initialize()
 
 		this->setPeriod(STATES::Compute, 100);
 		//this->setPeriod(STATES::Emergency, 500);
-
 	}
-
 }
+
 
 void SpecificWorker::compute()
 {
@@ -99,58 +104,150 @@ void SpecificWorker::compute()
 	//read bpearl (lower) lidar and draw
 	auto ldata_bpearl = read_lidar_bpearl();
 	if(ldata_bpearl.empty()) { qWarning() << __FUNCTION__ << "Empty bpearl lidar data"; return; };
-	qDebug()<<ldata_bpearl.size();
 	draw_lidar(ldata_bpearl, &viewer->scene);
 
-	//Poner color celda
-	/*
-	const auto &[i,j] = get_grid_index(1000, 1000);
-	qDebug()<<i<<j;
-	grid[i][j].item->setBrush(QBrush(QColor("Magenta")));
-	*/
 
-	std::tuple<int, int> index;
-	//int i = 0;
+	clear_grid();
+	// Update grid
+	update_grid(ldata_bpearl);
 
+	// clear
 
-	for(auto &&[i, row]: grid | iter::enumerate)
-		for (auto &&[j, celda] : row | iter::enumerate)
-		{
-			celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
-				 QPen(QColor("Blue"), 20), QBrush(QColor("Black")));
-			celda.item->setPos(get_lidar_point(i, j));
-			celda.state = State::Unknown;
-		}
+	// INTENTO DE DIJKSTRA
+
+	// GridPosition start = get_grid_index(0.f, 0.f);
+	// GridPosition goal = get_grid_index(6.f, 6.f);
+	//
+	// // Calcular la ruta
+	// auto path = compute_dijkstra_path(start, goal);
+	//
+	// // Dibujar la ruta en la cuadrícula
+	// for (const auto &[i, j] : path)
+	// {
+	// 	grid[i][j].item->setBrush(QBrush(QColor("Blue"))); // Marcar la ruta en azul
+	// }
+
+}
+
+void SpecificWorker::update_grid(const std::vector<Eigen::Vector2f> &ldata_bpearl)
+{
+	const QBrush brush(QColor("White"));
 
 	for (const auto &p : ldata_bpearl)
 	{
-		auto salto = p.norm() / CELL_SIZE_MM; //NUMERO DE CELDAS EN ESA DISTANCIA
-		auto r = p.normalized();
+		const auto salto = p.norm() / (CELL_SIZE_MM / 2); // Número de celdas en esa distancia
+		const auto r = p.normalized();
+
+		// Marcar celdas como vacías (Empty)
 		for (const auto s : iter::range(0.f, p.norm(), salto))
 		{
-			auto step = r*s;
-			index = get_grid_index(step.x(), step.y());
-			const auto &[i, j] = index;
-			// celda de index = free, white
+			const auto step = r * s;
+			auto index_opt = get_grid_index(step.x(), step.y());
 
-			if (i > 0 && j > 0 && i < NUM_CELLS_X && j < NUM_CELLS_Y)
+			// Verificar si el índice es válido antes de acceder
+			if (index_opt.has_value())
 			{
+				const auto &[i, j] = index_opt.value();
 				grid[i][j].state = State::Empty;
-				grid[i][j].item->setBrush(QBrush(QColor("White")));
+				grid[i][j].item->setBrush(brush);
 			}
 		}
-		//celda de p occupied and red
 
-		index = get_grid_index(p.x(), p.y());
-		const auto &[i, j] = index;
-
-		if (i > 0 && j > 0 && i < NUM_CELLS_X && j < NUM_CELLS_Y) {
-			grid[i][j].item->setBrush(QBrush(QColor("Red")));
+		// Marcar la celda final como ocupada (Occupied)
+		auto final_index_opt = get_grid_index(p.x(), p.y());
+		if (final_index_opt.has_value())
+		{
+			const auto &[i, j] = final_index_opt.value();
 			grid[i][j].state = State::Occupied;
+			grid[i][j].item->setBrush(QBrush(QColor("Red")));
 		}
 	}
-
 }
+
+
+void SpecificWorker::clear_grid()
+{
+	const QBrush brush(QColor("Light Gray"));
+	for (auto &row : grid)
+		for (auto &[state, item] : row) {
+			item->setBrush(brush);
+			state = State::Unknown;
+		}
+}
+auto SpecificWorker::compute_dijkstra_path(GridPosition start, GridPosition goal) -> std::vector<GridPosition>
+{
+    // Vector para almacenar las direcciones (adyacentes)
+    const std::vector<GridPosition> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1},
+                                                   {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
+
+    // Cola de prioridad para procesar los nodos
+    priority_queue<Node, std::vector<Node>, std::greater<Node>> open_set;
+
+    // Mapas para rastrear costes y predecesores
+    std::unordered_map<GridPosition, float, boost::hash<GridPosition>> cost_map;
+    std::unordered_map<GridPosition, GridPosition, boost::hash<GridPosition>> came_from;
+
+    // Inicialización
+    open_set.push({start, 0.0f});
+    cost_map[start] = 0.0f;
+
+    while (!open_set.empty())
+    {
+        Node current = open_set.top();
+        open_set.pop();
+
+        if (current.pos == goal)
+            break; // Se llegó al destino
+
+        const auto &[cx, cy] = current.pos;
+
+        for (const auto &[dx, dy] : directions)
+        {
+            GridPosition neighbor = {cx + dx, cy + dy};
+            const auto &[nx, ny] = neighbor;
+
+            // Verificar si está dentro de la cuadrícula y es transitable
+            if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
+                continue;
+
+            if (grid[nx][ny].state != State::Empty)
+                continue;
+
+            // Calcular el coste al vecino
+            float new_cost = cost_map[current.pos] + std::hypot(dx, dy);
+
+            // Si es un camino más corto al vecino
+            if (cost_map.find(neighbor) == cost_map.end() || new_cost < cost_map[neighbor])
+            {
+                cost_map[neighbor] = new_cost;
+                came_from[neighbor] = current.pos;
+                open_set.push({neighbor, new_cost});
+            }
+        }
+    }
+
+    // Reconstruir la ruta desde `came_from`
+    std::vector<GridPosition> path;
+    GridPosition current = goal;
+
+    while (current != start)
+    {
+        path.push_back(current);
+
+        if (came_from.find(current) == came_from.end())
+            return {}; // No hay camino válido
+
+        current = came_from[current];
+    }
+
+    path.push_back(start);
+    std::reverse(path.begin(), path.end());
+    return path;
+}
+
+
+
+
 
 //////////////////////////////////////////////////////////////////
 /// YOUR CODE HERE
@@ -201,7 +298,7 @@ void SpecificWorker::draw_lidar(auto &filtered_points, QGraphicsScene *scene)
 	auto brush = QBrush(QColor(Qt::darkGreen));
 	for(const auto &p : filtered_points)
 	{
-		auto item = scene->addRect(-50, -50, 100, 100, color, brush);
+		auto item = scene->addRect(-25, -25, 50, 50, color, brush);
 		item->setPos(p.x(), p.y());
 		items.push_back(item);
 	}
@@ -226,13 +323,19 @@ QPointF SpecificWorker::get_lidar_point(int i, int j)
 	return QPointF(x, y);
 }
 
-std::tuple<int,int> SpecificWorker::get_grid_index(float x, float y)
+std::optional<std::tuple<int, int>> SpecificWorker::get_grid_index(float x, float y)
 {
-	int i = (static_cast<float>(NUM_CELLS_X)/GRID_WIDTH_MM)*x + (NUM_CELLS_X/2);
-	int j = (static_cast<float>(NUM_CELLS_Y)/GRID_WIDTH_MM)*y + (NUM_CELLS_Y/2);
-	qDebug()<<i<<j<<x<<y;
+	// Cálculo inicial de las coordenadas de la cuadrícula
+	int i = (static_cast<float>(NUM_CELLS_X) / GRID_WIDTH_MM) * x + (NUM_CELLS_X / 2);
+	int j = (static_cast<float>(NUM_CELLS_Y) / GRID_WIDTH_MM) * y + (NUM_CELLS_Y / 2);
 
+	// Comprobación de límites antes de aplicar el clamping
+	if (i < 0 || i >= NUM_CELLS_X || j < 0 || j >= NUM_CELLS_Y)
+	{
+		return std::nullopt; // Retornar opcional vacío si está fuera de los límites
+	}
 
+	// Retornar las coordenadas dentro de los límites
 	return std::make_tuple(i, j);
 }
 

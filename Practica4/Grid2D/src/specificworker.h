@@ -27,17 +27,24 @@
 #ifndef SPECIFICWORKER_H
 #define SPECIFICWORKER_H
 
-#define HIBERNATION_ENABLED
+//#define HIBERNATION_ENABLED
 
 #include <genericworker.h>
 #include <Eigen/Dense>
 #include "abstract_graphic_viewer/abstract_graphic_viewer.h"
+#include <algorithm>
+#include <unordered_set>
+#include <functional>
+#include <tuple>
+#include <tuple>
+#include <boost/functional/hash.hpp>
 
 
 class SpecificWorker : public GenericWorker
 {
 	Q_OBJECT
 	public:
+		using GridPosition = std::tuple<int, int>;
 		SpecificWorker(TuplePrx tprx, bool startup_check);
 		~SpecificWorker();
 		bool setParams(RoboCompCommonBehavior::ParameterList params);
@@ -47,7 +54,14 @@ class SpecificWorker : public GenericWorker
 
 	public slots:
 		void initialize();
-		void compute();
+
+	void update_grid(const std::vector<Eigen::Vector2f> &ldata_bpearl);
+
+	void clear_grid();
+
+	vector<GridPosition> compute_dijkstra_path(GridPosition start, GridPosition goal);
+
+	void compute();
 		void emergency();
 		void restore();
 		int startup_check();
@@ -91,6 +105,19 @@ class SpecificWorker : public GenericWorker
 		QGraphicsRectItem *item;
 	};
 
+	struct Node
+	{
+		GridPosition pos;
+		float cost;
+
+		// Sobrecarga de operador para ordenar en la priority_queue
+		bool operator>(const Node &other) const
+		{
+			return cost > other.cost;
+		}
+	};
+
+
 	// Declarar la cuadrícula como un arreglo 2D de celdas
 	// Definir las dimensiones de la cuadrícula
 	static constexpr int GRID_WIDTH_MM = 5000;
@@ -113,7 +140,7 @@ class SpecificWorker : public GenericWorker
 		TCell getCell(auto x, auto y);
 		void setCell(auto x, auto y, TCell cell);
 		QPointF get_lidar_point(int i, int j);
-		std::tuple<int,int>  get_grid_index(float x, float y);
+		std::optional<std::tuple<int, int>> get_grid_index(float x, float y);
 
 
 };
