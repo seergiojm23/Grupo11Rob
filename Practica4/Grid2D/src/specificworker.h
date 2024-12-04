@@ -44,7 +44,10 @@ class SpecificWorker : public GenericWorker
 {
 	Q_OBJECT
 	public:
-		using GridPosition = std::tuple<int, int>;
+		//using GridPosition = std::optional<std::tuple<int, int>>;
+		// Alias para representar una posición en la cuadrícula
+		using GridPosition = std::optional<std::tuple<int, int>>;
+
 		SpecificWorker(TuplePrx tprx, bool startup_check);
 		~SpecificWorker();
 		bool setParams(RoboCompCommonBehavior::ParameterList params);
@@ -54,12 +57,15 @@ class SpecificWorker : public GenericWorker
 
 	public slots:
 		void initialize();
+		void new_mouse_coordinates(QPointF);
 
 	void update_grid(const std::vector<Eigen::Vector2f> &ldata_bpearl);
 
 	void clear_grid();
 
-	vector<GridPosition> compute_dijkstra_path(GridPosition start, GridPosition goal);
+	std::vector<QPointF> dijkstraAlgorithm(GridPosition start, GridPosition target);
+
+	void draw_path(const vector<QPointF> & path, QGraphicsScene *scene);
 
 	void compute();
 		void emergency();
@@ -67,6 +73,7 @@ class SpecificWorker : public GenericWorker
 		int startup_check();
 	private:
 		bool startup_check_flag;
+		std::vector<QPointF> path;
 
 	struct Params
 	{
@@ -103,6 +110,7 @@ class SpecificWorker : public GenericWorker
 	struct TCell {
 		State state;  // Tipo de celda (usamos el enum CellType)
 		QGraphicsRectItem *item;
+		bool changed = false;
 	};
 
 	struct Node
@@ -122,7 +130,7 @@ class SpecificWorker : public GenericWorker
 	// Definir las dimensiones de la cuadrícula
 	static constexpr int GRID_WIDTH_MM = 5000;
 	static constexpr int GRID_HEIGHT_MM = 5000;
-	static constexpr int CELL_SIZE_MM = 100;  // Tamaño de la celda en milímetros
+	static constexpr int CELL_SIZE_MM = 50;  // Tamaño de la celda en milímetros
 
 	// Calcular el número de celdas en cada dimensión
 	static constexpr int NUM_CELLS_X = GRID_WIDTH_MM / CELL_SIZE_MM;
@@ -141,6 +149,8 @@ class SpecificWorker : public GenericWorker
 		void setCell(auto x, auto y, TCell cell);
 		QPointF get_lidar_point(int i, int j);
 		std::optional<std::tuple<int, int>> get_grid_index(float x, float y);
+
+		void regruesadoObstaculo();
 
 
 };

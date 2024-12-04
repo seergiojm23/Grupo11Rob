@@ -92,9 +92,22 @@ void SpecificWorker::initialize()
 			hibernationChecker.start(500);
 		#endif
 
+		//Para indicar con el ratón el punto del grid de la coordenada a donde debe dirigirse el robot mediante Dijkstra
+		connect(viewer, SIGNAL(new_mouse_coordinates(QPointF)), this, SLOT(new_mouse_coordinates(QPointF)));
+
 		this->setPeriod(STATES::Compute, 100);
 		//this->setPeriod(STATES::Emergency, 500);
 	}
+}
+
+
+void SpecificWorker::new_mouse_coordinates(QPointF p)
+{
+	qDebug() << "New mouse coordinates" << p;
+	std::optional<std::tuple<int, int>> meta = get_grid_index(p.x(), p.y());
+	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
+
+	path = dijkstraAlgorithm(salida, meta);
 }
 
 
@@ -110,22 +123,12 @@ void SpecificWorker::compute()
 	clear_grid();
 	// Update grid
 	update_grid(ldata_bpearl);
+	regruesadoObstaculo();
+
+	draw_path(path, &viewer->scene);
+	qDebug() <<path.size() << "path size";
 
 	// clear
-
-	// INTENTO DE DIJKSTRA
-
-	// GridPosition start = get_grid_index(0.f, 0.f);
-	// GridPosition goal = get_grid_index(6.f, 6.f);
-	//
-	// // Calcular la ruta
-	// auto path = compute_dijkstra_path(start, goal);
-	//
-	// // Dibujar la ruta en la cuadrícula
-	// for (const auto &[i, j] : path)
-	// {
-	// 	grid[i][j].item->setBrush(QBrush(QColor("Blue"))); // Marcar la ruta en azul
-	// }
 
 }
 
@@ -135,7 +138,7 @@ void SpecificWorker::update_grid(const std::vector<Eigen::Vector2f> &ldata_bpear
 
 	for (const auto &p : ldata_bpearl)
 	{
-		const auto salto = p.norm() / (CELL_SIZE_MM / 2); // Número de celdas en esa distancia
+		const auto salto = p.norm() / (CELL_SIZE_MM / 4); // Número de celdas en esa distancia
 		const auto r = p.normalized();
 
 		// Marcar celdas como vacías (Empty)
@@ -169,84 +172,148 @@ void SpecificWorker::clear_grid()
 {
 	const QBrush brush(QColor("Light Gray"));
 	for (auto &row : grid)
-		for (auto &[state, item] : row) {
+		for (auto &[state, item, changed] : row) {
 			item->setBrush(brush);
 			state = State::Unknown;
+			changed = false;
 		}
 }
-auto SpecificWorker::compute_dijkstra_path(GridPosition start, GridPosition goal) -> std::vector<GridPosition>
+
+std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridPosition target)
 {
-    // Vector para almacenar las direcciones (adyacentes)
-    const std::vector<GridPosition> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1},
-                                                   {1, 1}, {1, -1}, {-1, 1}, {-1, -1}};
-
-    // Cola de prioridad para procesar los nodos
-    priority_queue<Node, std::vector<Node>, std::greater<Node>> open_set;
-
-    // Mapas para rastrear costes y predecesores
-    std::unordered_map<GridPosition, float, boost::hash<GridPosition>> cost_map;
-    std::unordered_map<GridPosition, GridPosition, boost::hash<GridPosition>> came_from;
-
-    // Inicialización
-    open_set.push({start, 0.0f});
-    cost_map[start] = 0.0f;
-
-    while (!open_set.empty())
+    // Verificar que las posiciones de inicio y objetivo son válidas
+    if (!start.has_value() || !target.has_value())
     {
-        Node current = open_set.top();
-        open_set.pop();
+        qWarning() << "Posicin de inicio o objetivo no válida.";
+        return {};
+    }
 
-        if (current.pos == goal)
-            break; // Se llegó al destino
+    // Desempaquetar las posiciones
+    auto [start_x, start_y] = start.value();
+    auto [target_x, target_y] = target.value();
 
-        const auto &[cx, cy] = current.pos;
+    // Direcciones de movimiento (arriba, abajo, izquierda, derecha)
+    const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
 
+    // Mapa de distancias mínimas desde el inicio
+    std::unordered_map<std::tuple<int, int>, int, boost::hash<std::tuple<int, int>>> min_distance;
+
+    // Mapa para reconstruir el camino
+    std::unordered_map<std::tuple<int, int>, std::tuple<int, int>, boost::hash<std::tuple<int, int>>> previous;
+
+    // Inicializar distancias
+    for (int i = 0; i < NUM_CELLS_X; ++i)
+    {
+        for (int j = 0; j < NUM_CELLS_Y; ++j)
+        {
+            std::tuple<int, int> pos = {i, j};
+            if (grid[i][j].state == State::Occupied)
+                min_distance[pos] = std::numeric_limits<int>::max(); // Obstáculo
+            else
+                min_distance[pos] = std::numeric_limits<int>::max();
+        }
+    }
+
+    // Distancia al punto inicial es 0
+    std::tuple<int, int> start_pos = {start_x, start_y};
+    min_distance[start_pos] = 0;
+
+    // Crear la cola de prioridad (min heap)
+    std::priority_queue<std::pair<int, std::tuple<int, int>>,
+                        std::vector<std::pair<int, std::tuple<int, int>>>,
+                        std::greater<>> pq;
+    pq.push({0, start_pos});
+
+    // Algoritmo de Dijkstra
+    while (!pq.empty())
+    {
+        auto [current_dist, current] = pq.top();
+        pq.pop();
+
+        // Si llegamos al objetivo, detener
+        if (current == std::make_tuple(target_x, target_y))
+            break;
+
+        // Obtener coordenadas del nodo actual
+        auto [cx, cy] = current;
+
+        // Explorar vecinos
         for (const auto &[dx, dy] : directions)
         {
-            GridPosition neighbor = {cx + dx, cy + dy};
-            const auto &[nx, ny] = neighbor;
+            int nx = cx + dx;
+            int ny = cy + dy;
 
-            // Verificar si está dentro de la cuadrícula y es transitable
+            // Verificar límites de la cuadrícula
             if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
                 continue;
 
-            if (grid[nx][ny].state != State::Empty)
+            // Verificar si la celda es transitable
+            if (grid[nx][ny].state == State::Occupied)
                 continue;
 
-            // Calcular el coste al vecino
-            float new_cost = cost_map[current.pos] + std::hypot(dx, dy);
+            std::tuple<int, int> neighbor = {nx, ny};
+            int new_dist = current_dist + 1; // Coste uniforme de 1 para cada movimiento
 
-            // Si es un camino más corto al vecino
-            if (cost_map.find(neighbor) == cost_map.end() || new_cost < cost_map[neighbor])
+            // Actualizar si se encuentra un camino más corto
+            if (new_dist < min_distance[neighbor])
             {
-                cost_map[neighbor] = new_cost;
-                came_from[neighbor] = current.pos;
-                open_set.push({neighbor, new_cost});
+                min_distance[neighbor] = new_dist;
+                previous[neighbor] = current;
+                pq.push({new_dist, neighbor});
             }
         }
     }
 
-    // Reconstruir la ruta desde `came_from`
-    std::vector<GridPosition> path;
-    GridPosition current = goal;
+    // Reconstruir el camino desde el objetivo al inicio
+    std::vector<std::tuple<int, int>> path;
+    std::tuple<int, int> current = {target_x, target_y};
 
-    while (current != start)
+    while (current != start_pos)
     {
         path.push_back(current);
-
-        if (came_from.find(current) == came_from.end())
-            return {}; // No hay camino válido
-
-        current = came_from[current];
+        if (previous.find(current) == previous.end())
+        {
+            qWarning() << "No se encontró un camino válido.";
+            return {};
+        }
+        current = previous[current];
     }
-
-    path.push_back(start);
+    path.push_back(start_pos);
     std::reverse(path.begin(), path.end());
-    return path;
+
+
+
+
+    // Pintar el camino en la cuadrícula
+	std::vector<QPointF> path_points;
+	path_points.reserve(path.size());
+    for (const auto &[x, y] : path)
+    	path_points.emplace_back(get_lidar_point(x, y));
+
+	return path_points;
 }
 
+void SpecificWorker::draw_path(const vector<QPointF> &path, QGraphicsScene *scene)
+{
+	static std::vector<QGraphicsItem*> items;   // store items so they can be shown between iterations
 
+	// remove all items drawn in the previous iteration
+	for(auto i: items)
+	{
+		scene->removeItem(i);
+		delete i;
+	}
+	items.clear();
 
+	const QBrush brush(QColor("Blue"));
+	for (const auto &[x, y] : path)
+	{
+		auto i = scene->addEllipse(-50, -50, 100, 100, QPen (Qt::blue), brush);
+		i->setPos(x,y);
+		items.push_back(i);
+	}
+
+}
 
 
 //////////////////////////////////////////////////////////////////
@@ -339,6 +406,32 @@ std::optional<std::tuple<int, int>> SpecificWorker::get_grid_index(float x, floa
 	return std::make_tuple(i, j);
 }
 
+void SpecificWorker::regruesadoObstaculo()
+{
+	// Direcciones de movimiento (arriba, abajo, izquierda, derecha)
+	const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {-1, 1}, {1, -1}, {1, 1}, {-1, -1}};
+
+	const QBrush brush(QColor("Red"));
+
+	for(auto &&[i, row]: grid | iter::enumerate)
+		for (auto &&[j, celda] : row | iter::enumerate)
+		{
+			if (celda.state == State::Occupied and not celda.changed) {
+				for (auto &[x, y]: directions)
+				{
+					auto sumai = i + x;
+					auto sumaj = j + y;
+					if (sumai > 0 and sumai < NUM_CELLS_X and sumaj > 0 and sumaj < NUM_CELLS_Y and not grid[sumai][sumaj].changed )
+					{
+						grid[sumai][sumaj].state = State::Occupied;
+						grid[sumai][sumaj].item->setBrush(brush);
+						grid[sumai][sumaj].changed = true;
+					}
+				}
+			}
+		}
+}
+
 
 void SpecificWorker::emergency()
 {
@@ -368,6 +461,14 @@ int SpecificWorker::startup_check()
 
 RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
 {
+	/*
+	qDebug() << "New mouse coordinates" << p;
+	std::optional<std::tuple<int, int>> meta = get_grid_index(p.x(), p.y());
+	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
+
+	path = dijkstraAlgorithm(salida, meta);
+	*/
+
 #ifdef HIBERNATION_ENABLED
 	hibernation = true;
 #endif
