@@ -1,0 +1,16 @@
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/edit_cache.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/rebuild_cache.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/list_install_components.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/install.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/install/local.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles/install/strip.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_Grid2D_src.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/edit_cache.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/rebuild_cache.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/list_install_components.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/install.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/install/local.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/install/strip.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen_timestamp_deps.dir
+/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir

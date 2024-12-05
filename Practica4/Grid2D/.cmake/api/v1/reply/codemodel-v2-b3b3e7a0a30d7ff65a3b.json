@@ -1,0 +1,105 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-5aaf67368b64f95deec2.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-src-be711403ea21de6eb005.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "grid2D",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_Grid2D_src::@145eef247bfb46b6828c",
+					"jsonFile" : "target-ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_Grid2D_src-842cc8c0b988772066b1.json",
+					"name" : "ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_Grid2D_src",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "grid2D::@145eef247bfb46b6828c",
+					"jsonFile" : "target-grid2D-af43a8458d5a0598a4ad.json",
+					"name" : "grid2D",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "grid2D_autogen::@145eef247bfb46b6828c",
+					"jsonFile" : "target-grid2D_autogen-3a7c4862d57b30639b1d.json",
+					"name" : "grid2D_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "grid2D_autogen_timestamp_deps::@145eef247bfb46b6828c",
+					"jsonFile" : "target-grid2D_autogen_timestamp_deps-e86031893c0343223f8e.json",
+					"name" : "grid2D_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D",
+		"source" : "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
