@@ -103,6 +103,8 @@ void SpecificWorker::initialize()
 
 void SpecificWorker::compute()
 {
+	if (parar_compute)
+		return;
 
 	//read bpearl (lower) lidar and draw
 	auto ldata_bpearl = read_lidar_bpearl();
@@ -457,17 +459,43 @@ void SpecificWorker::new_mouse_coordinates(QPointF p)
 	path = dijkstraAlgorithm(salida, meta);
 }
 
+void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
+{
+	parar_compute.store(true);
+
+	const auto &[x, y] = p;
+
+	qDebug() << "Borrar persona" << x << y ;
+
+	for (int i = -2; i < 3; i++)
+		for (int j = -2; j < 3; j++)
+		{
+			qDebug() << "dentro dde for" << i << j ;
+			grid[x + i][y + j].state = State::Empty;
+			qDebug() << "HE PASADO DEL PRIIMER ACCESO";
+			//grid[x + i][y + j].item->setBrush(QBrush(QColor("White")));
+			//qDebug() << "Y TAMBIEN PONGO COLOR " ;
+		}
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 
 RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
 {
+	qDebug() << "Tracker coordinates" << target.x<<target.y;;
+	auto p = get_grid_index(target.x,target.y);
 
-	qDebug() << "New mouse coordinates" << target.x<<target.y;;
+	if ( not p.has_value())
+		return {};
+
 	std::optional<std::tuple<int, int>> meta = get_grid_index(target.x, target.y);
 	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
 
+	BorrarPersona(p.value());
+
 	path = dijkstraAlgorithm(salida, meta);
+
+	parar_compute.store(false);
 
 	RoboCompGrid2D::Result res;
 
