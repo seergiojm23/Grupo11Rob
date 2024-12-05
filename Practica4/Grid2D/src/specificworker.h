@@ -130,7 +130,7 @@ class SpecificWorker : public GenericWorker
 	// Definir las dimensiones de la cuadrícula
 	static constexpr int GRID_WIDTH_MM = 5000;
 	static constexpr int GRID_HEIGHT_MM = 5000;
-	static constexpr int CELL_SIZE_MM = 50;  // Tamaño de la celda en milímetros
+	static constexpr int CELL_SIZE_MM = 100;  // Tamaño de la celda en milímetros
 
 	// Calcular el número de celdas en cada dimensión
 	static constexpr int NUM_CELLS_X = GRID_WIDTH_MM / CELL_SIZE_MM;

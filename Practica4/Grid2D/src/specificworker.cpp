@@ -84,7 +84,7 @@ void SpecificWorker::initialize()
 			for (auto &&[j, celda] : row | iter::enumerate)
 			{
 				celda.item = viewer->scene.addRect(CELL_SIZE_MM/2, CELL_SIZE_MM/2, CELL_SIZE_MM, CELL_SIZE_MM,
-					 QPen(QColor("White"), 20), QBrush(QColor("Light Gray")));
+					 QPen(QColor("White"), 10), QBrush(QColor("Light Gray")));
 				celda.item->setPos(get_lidar_point(i, j));
 				celda.state = State::Unknown;
 			}
@@ -98,16 +98,6 @@ void SpecificWorker::initialize()
 		this->setPeriod(STATES::Compute, 100);
 		//this->setPeriod(STATES::Emergency, 500);
 	}
-}
-
-
-void SpecificWorker::new_mouse_coordinates(QPointF p)
-{
-	qDebug() << "New mouse coordinates" << p;
-	std::optional<std::tuple<int, int>> meta = get_grid_index(p.x(), p.y());
-	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
-
-	path = dijkstraAlgorithm(salida, meta);
 }
 
 
@@ -207,7 +197,7 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
         for (int j = 0; j < NUM_CELLS_Y; ++j)
         {
             std::tuple<int, int> pos = {i, j};
-            if (grid[i][j].state == State::Occupied)
+            if (grid[i][j].state == State::Occupied or grid[i][j].state == State::Unknown)
                 min_distance[pos] = std::numeric_limits<int>::max(); // Obstáculo
             else
                 min_distance[pos] = std::numeric_limits<int>::max();
@@ -409,7 +399,7 @@ std::optional<std::tuple<int, int>> SpecificWorker::get_grid_index(float x, floa
 void SpecificWorker::regruesadoObstaculo()
 {
 	// Direcciones de movimiento (arriba, abajo, izquierda, derecha)
-	const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {-1, 1}, {1, -1}, {1, 1}, {-1, -1}};
+	const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {-1, 1}, {1, -1}, {1, 1}, {-1, -1}, {2,2}, {2,1}, {2,0}, {2,-1}, {2,-2}, {-2,2}, {-2,1}, {-2,0}, {-2,-1}, {-2,-2}, {1,2},{0,2}, {-1,2}, {1,-2}, {0,-2}, {-1,-2}};
 
 	const QBrush brush(QColor("Red"));
 
@@ -458,16 +448,34 @@ int SpecificWorker::startup_check()
 	return 0;
 }
 
-
-RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
+void SpecificWorker::new_mouse_coordinates(QPointF p)
 {
-	/*
 	qDebug() << "New mouse coordinates" << p;
 	std::optional<std::tuple<int, int>> meta = get_grid_index(p.x(), p.y());
 	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
 
 	path = dijkstraAlgorithm(salida, meta);
-	*/
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
+
+RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
+{
+
+	qDebug() << "New mouse coordinates" << target.x<<target.y;;
+	std::optional<std::tuple<int, int>> meta = get_grid_index(target.x, target.y);
+	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
+
+	path = dijkstraAlgorithm(salida, meta);
+
+	RoboCompGrid2D::Result res;
+
+	for	(const auto &[x, y]: path) {
+		res.path.emplace_back(x,y);
+	}
+
+	return res;
 
 #ifdef HIBERNATION_ENABLED
 	hibernation = true;
