@@ -1,0 +1,105 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-0fb4d4147be1388807fe.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "2.8"
+					},
+					"projectIndex" : 0,
+					"source" : "."
+				},
+				{
+					"build" : "src",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-src-Debug-6c19ef41a23198aab3ee.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.16"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 0,
+					"source" : "src",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"directoryIndexes" : 
+					[
+						0,
+						1
+					],
+					"name" : "obs_person_tracker",
+					"targetIndexes" : 
+					[
+						0,
+						1,
+						2,
+						3
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_tracker_src::@145eef247bfb46b6828c",
+					"jsonFile" : "target-ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_tracker_src-Debug-645080654a6a79776d85.json",
+					"name" : "ICES__home_robocomp_robocomp_components_Grupo11Rob_Practica4_tracker_src",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "obs_person_tracker::@145eef247bfb46b6828c",
+					"jsonFile" : "target-obs_person_tracker-Debug-8a815d5dea67985a58a6.json",
+					"name" : "obs_person_tracker",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "obs_person_tracker_autogen::@145eef247bfb46b6828c",
+					"jsonFile" : "target-obs_person_tracker_autogen-Debug-c4aef5941fe2c024d13e.json",
+					"name" : "obs_person_tracker_autogen",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 1,
+					"id" : "obs_person_tracker_autogen_timestamp_deps::@145eef247bfb46b6828c",
+					"jsonFile" : "target-obs_person_tracker_autogen_timestamp_deps-Debug-5af9e7f9a280da3f9d5f.json",
+					"name" : "obs_person_tracker_autogen_timestamp_deps",
+					"projectIndex" : 0
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/tracker/cmake-build-debug",
+		"source" : "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/tracker"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}
