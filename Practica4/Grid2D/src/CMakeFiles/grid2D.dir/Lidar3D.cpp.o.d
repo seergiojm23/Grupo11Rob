@@ -1,7 +1,7 @@
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o: \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp \
  /usr/include/stdc-predef.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.h \
  /usr/include/IceUtil/PushDisableWarnings.h /usr/include/Ice/ProxyF.h \
  /usr/include/Ice/Config.h /usr/include/IceUtil/Config.h \
  /usr/include/c++/12/stdlib.h /usr/include/c++/12/cstdlib \

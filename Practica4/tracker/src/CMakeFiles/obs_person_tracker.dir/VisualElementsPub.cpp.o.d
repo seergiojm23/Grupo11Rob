@@ -1,7 +1,7 @@
 src/CMakeFiles/obs_person_tracker.dir/VisualElementsPub.cpp.o: \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/VisualElementsPub.cpp \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/VisualElementsPub.cpp \
  /usr/include/stdc-predef.h \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/VisualElementsPub.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/VisualElementsPub.h \
  /usr/include/IceUtil/PushDisableWarnings.h /usr/include/Ice/ProxyF.h \
  /usr/include/Ice/Config.h /usr/include/IceUtil/Config.h \
  /usr/include/c++/12/stdlib.h /usr/include/c++/12/cstdlib \
@@ -286,5 +286,5 @@ src/CMakeFiles/obs_person_tracker.dir/VisualElementsPub.cpp.o: \
  /usr/include/c++/12/deque /usr/include/c++/12/bits/stl_deque.h \
  /usr/include/c++/12/bits/deque.tcc /usr/include/Ice/FactoryTableInit.h \
  /usr/include/Ice/DefaultValueFactory.h \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/Camera360RGB.h \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/Lidar3D.h
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/Camera360RGB.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/Lidar3D.h

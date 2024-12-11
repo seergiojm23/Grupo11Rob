@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/305/bin/cmake/linux/x64/bin/cmake
+CMAKE_COMMAND = /snap/clion/308/bin/cmake/linux/x64/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E rm -f
+RM = /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_SOURCE_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_BINARY_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # Utility rule file for grid2D_autogen.
 
@@ -71,9 +71,9 @@ src/CMakeFiles/grid2D_autogen: src/grid2D_autogen/timestamp
 src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/moc
 src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/uic
 src/grid2D_autogen/timestamp: src/CMakeFiles/grid2D_autogen.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target grid2D"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json ""
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E touch /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Automatic MOC and UIC for target grid2D"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json ""
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E touch /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/timestamp
 
 grid2D_autogen: src/CMakeFiles/grid2D_autogen
 grid2D_autogen: src/grid2D_autogen/timestamp
@@ -85,10 +85,10 @@ src/CMakeFiles/grid2D_autogen.dir/build: grid2D_autogen
 .PHONY : src/CMakeFiles/grid2D_autogen.dir/build
 
 src/CMakeFiles/grid2D_autogen.dir/clean:
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D_autogen.dir/cmake_clean.cmake
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D_autogen.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/grid2D_autogen.dir/clean
 
 src/CMakeFiles/grid2D_autogen.dir/depend:
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : src/CMakeFiles/grid2D_autogen.dir/depend
 

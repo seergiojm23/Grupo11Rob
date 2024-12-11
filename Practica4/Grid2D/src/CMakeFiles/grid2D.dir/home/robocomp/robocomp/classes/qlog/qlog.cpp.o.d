@@ -1,7 +1,7 @@
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o: \
  /home/robocomp/robocomp/classes/qlog/qlog.cpp /usr/include/stdc-predef.h \
  /home/robocomp/robocomp/classes/qlog/qlog.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QtCore \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QtCoreDepends \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/qglobal.h \

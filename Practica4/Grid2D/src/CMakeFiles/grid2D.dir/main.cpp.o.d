@@ -1,5 +1,5 @@
 src/CMakeFiles/grid2D.dir/main.cpp.o: \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp \
  /usr/include/stdc-predef.h /usr/include/signal.h /usr/include/features.h \
  /usr/include/features-time64.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
@@ -1159,17 +1159,17 @@ src/CMakeFiles/grid2D.dir/main.cpp.o: \
  /home/robocomp/robocomp/classes/sigwatch/sigwatch.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QObject \
  /home/robocomp/robocomp/classes/qlog/qlog.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/config.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.h \
  /usr/include/x86_64-linux-gnu/qt6/QtGui/QtGui \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ui_mainUI.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ui_mainUI.h \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QApplication \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QFrame \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QVBoxLayout \
  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.h \
  /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.h \
  /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/QState \
  /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/qstate.h \
@@ -1182,10 +1182,10 @@ src/CMakeFiles/grid2D.dir/main.cpp.o: \
  /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/qstate.h \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QEvent \
  /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.h \
  /usr/include/Eigen/Dense /usr/include/Eigen/Core \
  /usr/include/Eigen/src/Core/util/DisableStupidWarnings.h \
  /usr/include/Eigen/src/Core/util/Macros.h \
@@ -1415,6 +1415,6 @@ src/CMakeFiles/grid2D.dir/main.cpp.o: \
  /usr/include/boost/container_hash/extensions.hpp \
  /usr/include/boost/detail/container_fwd.hpp /usr/include/c++/12/bitset \
  /usr/include/boost/static_assert.hpp \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.h \
- /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.h
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.h

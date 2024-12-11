@@ -7,7 +7,7 @@
 *****************************************************************************/
 
 #include <memory>
-#include "../../../../../../../../../../robocomp/components/Grupo11Rob/Practica4/tracker/src/genericmonitor.h"
+#include "../../genericmonitor.h"
 #include <QtGui/qtextcursor.h>
 #include <QScreen>
 #include <QtCore/qbytearray.h>

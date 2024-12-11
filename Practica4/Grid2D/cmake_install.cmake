@@ -1,4 +1,4 @@
-# Install script for directory: /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+# Install script for directory: /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -51,12 +51,12 @@ if(CMAKE_INSTALL_COMPONENT STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT
   if(CMAKE_ERROR_ON_ABSOLUTE_INSTALL_DESTINATION)
     message(FATAL_ERROR "ABSOLUTE path INSTALL DESTINATION forbidden (by caller): ${CMAKE_ABSOLUTE_DESTINATION_FILES}")
   endif()
-  file(INSTALL DESTINATION "/home/robocomp/robocomp/etc-default" TYPE FILE RENAME "grid2D.conf" FILES "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/etc/config")
+  file(INSTALL DESTINATION "/home/robocomp/robocomp/etc-default" TYPE FILE RENAME "grid2D.conf" FILES "/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/etc/config")
 endif()
 
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   # Include the install script for each subdirectory.
-  include("/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/cmake_install.cmake")
+  include("/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/cmake_install.cmake")
 
 endif()
 
@@ -75,6 +75,6 @@ endif()
 if(NOT CMAKE_INSTALL_LOCAL_ONLY)
   string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-  file(WRITE "/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/${CMAKE_INSTALL_MANIFEST}"
+  file(WRITE "/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")
 endif()

@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/305/bin/cmake/linux/x64/bin/cmake
+CMAKE_COMMAND = /snap/clion/308/bin/cmake/linux/x64/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E rm -f
+RM = /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_SOURCE_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_BINARY_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # Utility rule file for grid2D_autogen_timestamp_deps.
 
@@ -74,10 +74,10 @@ src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/build: grid2D_autogen_timestamp
 .PHONY : src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/build
 
 src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/clean:
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D_autogen_timestamp_deps.dir/cmake_clean.cmake
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D_autogen_timestamp_deps.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/clean
 
 src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/depend:
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : src/CMakeFiles/grid2D_autogen_timestamp_deps.dir/depend
 

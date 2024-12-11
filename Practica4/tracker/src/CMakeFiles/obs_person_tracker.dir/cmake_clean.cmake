@@ -1,6 +1,6 @@
 file(REMOVE_RECURSE
-  "/home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/bin/obs_person_tracker"
-  "/home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/bin/obs_person_tracker.pdb"
+  "../bin/obs_person_tracker"
+  "../bin/obs_person_tracker.pdb"
   "CMakeFiles/obs_person_tracker_autogen.dir/AutogenUsed.txt"
   "CMakeFiles/obs_person_tracker_autogen.dir/ParseCache.txt"
   "obs_person_tracker_autogen"
@@ -58,6 +58,8 @@ file(REMOVE_RECURSE
   "OmniRobot.h"
   "VisualElementsPub.cpp"
   "VisualElementsPub.h"
+  "obs_person_tracker_autogen/mocs_compilation.cpp"
+  "obs_person_tracker_autogen/timestamp"
   "ui_mainUI.h"
 )
 

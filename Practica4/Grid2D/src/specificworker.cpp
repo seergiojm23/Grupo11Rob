@@ -199,7 +199,7 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
         for (int j = 0; j < NUM_CELLS_Y; ++j)
         {
             std::tuple<int, int> pos = {i, j};
-            if (grid[i][j].state == State::Occupied or grid[i][j].state == State::Unknown)
+            if (grid[i][j].state == State::Occupied /*or grid[i][j].state == State::Unknown*/)
                 min_distance[pos] = std::numeric_limits<int>::max(); // Obstáculo
             else
                 min_distance[pos] = std::numeric_limits<int>::max();
@@ -300,7 +300,7 @@ void SpecificWorker::draw_path(const vector<QPointF> &path, QGraphicsScene *scen
 	const QBrush brush(QColor("Blue"));
 	for (const auto &[x, y] : path)
 	{
-		auto i = scene->addEllipse(-50, -50, 100, 100, QPen (Qt::blue), brush);
+		auto i = scene->addEllipse(-25, -25, 50, 50, QPen (Qt::blue), brush);
 		i->setPos(x,y);
 		items.push_back(i);
 	}
@@ -400,25 +400,25 @@ std::optional<std::tuple<int, int>> SpecificWorker::get_grid_index(float x, floa
 
 void SpecificWorker::regruesadoObstaculo()
 {
-	// Direcciones de movimiento (arriba, abajo, izquierda, derecha)
-	const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}, {-1, 1}, {1, -1}, {1, 1}, {-1, -1}, {2,2}, {2,1}, {2,0}, {2,-1}, {2,-2}, {-2,2}, {-2,1}, {-2,0}, {-2,-1}, {-2,-2}, {1,2},{0,2}, {-1,2}, {1,-2}, {0,-2}, {-1,-2}};
-
 	const QBrush brush(QColor("Red"));
 
 	for(auto &&[i, row]: grid | iter::enumerate)
 		for (auto &&[j, celda] : row | iter::enumerate)
 		{
 			if (celda.state == State::Occupied and not celda.changed) {
-				for (auto &[x, y]: directions)
-				{
-					auto sumai = i + x;
-					auto sumaj = j + y;
-					if (sumai > 0 and sumai < NUM_CELLS_X and sumaj > 0 and sumaj < NUM_CELLS_Y and not grid[sumai][sumaj].changed )
+				// for (auto &[x, y]: directions)
+				// {
+				for (int x = -8; x < 9; x++)
+					for (int y = -8; y < 9; y++)
 					{
-						grid[sumai][sumaj].state = State::Occupied;
-						grid[sumai][sumaj].item->setBrush(brush);
-						grid[sumai][sumaj].changed = true;
-					}
+						auto sumai = i + x;
+						auto sumaj = j + y;
+						if (sumai > 0 and sumai < NUM_CELLS_X and sumaj > 0 and sumaj < NUM_CELLS_Y and not grid[sumai][sumaj].changed )
+						{
+							grid[sumai][sumaj].state = State::Occupied;
+							grid[sumai][sumaj].item->setBrush(brush);
+							grid[sumai][sumaj].changed = true;
+						}
 				}
 			}
 		}
@@ -465,16 +465,10 @@ void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 
 	const auto &[x, y] = p;
 
-	qDebug() << "Borrar persona" << x << y ;
-
-	for (int i = -2; i < 3; i++)
-		for (int j = -2; j < 3; j++)
+	for (int i = -8; i < 9; i++)
+		for (int j = -8; j < 9; j++)
 		{
-			qDebug() << "dentro dde for" << i << j ;
 			grid[x + i][y + j].state = State::Empty;
-			qDebug() << "HE PASADO DEL PRIIMER ACCESO";
-			//grid[x + i][y + j].item->setBrush(QBrush(QColor("White")));
-			//qDebug() << "Y TAMBIEN PONGO COLOR " ;
 		}
 }
 
@@ -482,7 +476,6 @@ void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 
 RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
 {
-	qDebug() << "Tracker coordinates" << target.x<<target.y;;
 	auto p = get_grid_index(target.x,target.y);
 
 	if ( not p.has_value())

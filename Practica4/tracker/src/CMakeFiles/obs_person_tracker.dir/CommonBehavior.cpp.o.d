@@ -1,7 +1,7 @@
 src/CMakeFiles/obs_person_tracker.dir/CommonBehavior.cpp.o: \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/CommonBehavior.cpp \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/CommonBehavior.cpp \
  /usr/include/stdc-predef.h \
- /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/CommonBehavior.h \
+ /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/CommonBehavior.h \
  /usr/include/IceUtil/PushDisableWarnings.h /usr/include/Ice/ProxyF.h \
  /usr/include/Ice/Config.h /usr/include/IceUtil/Config.h \
  /usr/include/c++/12/stdlib.h /usr/include/c++/12/cstdlib \

@@ -1,4 +1,4 @@
-/snap/clion/305/bin/cmake/linux/x64/bin/cmake -G "Unix Makefiles" -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D -B /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+/snap/clion/308/bin/cmake/linux/x64/bin/cmake -G "Unix Makefiles" -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D -B /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
   Compatibility with CMake < 3.5 will be removed from a future version of
   CMake.
@@ -7,14 +7,35 @@ CMake Deprecation Warning at CMakeLists.txt:1 (cmake_minimum_required):
   CMake that the project does not need compatibility with older versions.
 
 
+-- The C compiler identification is GNU 12.3.0
+-- The CXX compiler identification is GNU 12.3.0
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Check for working C compiler: /usr/bin/cc - skipped
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Check for working CXX compiler: /usr/bin/c++ - skipped
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
 CMake Warning at src/CMakeLists.txt:5 (MESSAGE):
   ROBOCOMP variable not set.  Using the default value:
   /home/robocomp/robocomp
 
 
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD
+-- Performing Test CMAKE_HAVE_LIBC_PTHREAD - Success
+-- Found Threads: TRUE
+-- Performing Test HAVE_STDATOMIC
+-- Performing Test HAVE_STDATOMIC - Success
+-- Found WrapAtomic: TRUE
 -- COMPILING WITH QT6
 -- Configuring for x86_64 architecture
+-- Found OpenGL: /usr/lib/x86_64-linux-gnu/libOpenGL.so
+-- Found WrapOpenGL: TRUE
 -- Could NOT find XKB (missing: XKB_LIBRARY XKB_INCLUDE_DIR) (Required is at least version "0.5.0")
+-- Found WrapVulkanHeaders: /usr/include
 -- Ice version: 3.7.6
 -- Found the following Ice libraries:
 --   Ice++11 (required)
@@ -29,13 +50,13 @@ CMake Warning at src/CMakeLists.txt:5 (MESSAGE):
 -- The following Ice libraries were not found:
 --   IceUtil (optional)
 -- Found Ice: /usr/bin/slice2cpp (found version "3.7.6")
--- BU Adding rule to generate /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice from /home/robocomp/robocomp//interfaces/IDSLs/CommonBehavior.idsl
--- BU Adding rule to generate /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice from /home/robocomp/robocomp//interfaces/IDSLs/Grid2D.idsl
--- BU Adding rule to generate /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice from /home/robocomp/robocomp//interfaces/IDSLs/Lidar3D.idsl
--- BU ice=>h/cpp: Adding rule to generate CommonBehavior.h and CommonBehavior.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice
--- BU ice=>h/cpp: Adding rule to generate Grid2D.h and Grid2D.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice
--- BU ice=>h/cpp: Adding rule to generate Lidar3D.h and Lidar3D.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice
+-- BU Adding rule to generate /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice from /home/robocomp/robocomp//interfaces/IDSLs/CommonBehavior.idsl
+-- BU Adding rule to generate /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice from /home/robocomp/robocomp//interfaces/IDSLs/Grid2D.idsl
+-- BU Adding rule to generate /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice from /home/robocomp/robocomp//interfaces/IDSLs/Lidar3D.idsl
+-- BU ice=>h/cpp: Adding rule to generate CommonBehavior.h and CommonBehavior.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice
+-- BU ice=>h/cpp: Adding rule to generate Grid2D.h and Grid2D.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice
+-- BU ice=>h/cpp: Adding rule to generate Lidar3D.h and Lidar3D.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice
 -- Generating header file from mainUI.ui
--- Configuring done (0.2s)
+-- Configuring done (0.5s)
 -- Generating done (0.0s)
--- Build files have been written to: /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+-- Build files have been written to: /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D

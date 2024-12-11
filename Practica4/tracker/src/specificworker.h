@@ -66,7 +66,7 @@ class SpecificWorker : public GenericWorker
             float ADVANCE_THRESHOLD = ROBOT_WIDTH * 3; // mm
             float LIDAR_FRONT_SECTION = 0.2; // rads, aprox 12 degrees
             // person
-            float PERSON_MIN_DIST = 1200; // mm
+            float PERSON_MIN_DIST = 800; // mm
             int MAX_DIST_POINTS_TO_SHOW = 300; // points to show in plot
             // lidar
             std::string LIDAR_NAME_LOW = "bpearl";

@@ -44,19 +44,19 @@ cmake_force:
 SHELL = /bin/sh
 
 # The CMake executable.
-CMAKE_COMMAND = /snap/clion/305/bin/cmake/linux/x64/bin/cmake
+CMAKE_COMMAND = /snap/clion/308/bin/cmake/linux/x64/bin/cmake
 
 # The command to remove a file.
-RM = /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E rm -f
+RM = /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E rm -f
 
 # Escaping for special characters.
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_SOURCE_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D
+CMAKE_BINARY_DIR = /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D
 
 # Include any dependencies generated for this target.
 include src/CMakeFiles/grid2D.dir/depend.make
@@ -70,261 +70,261 @@ include src/CMakeFiles/grid2D.dir/progress.make
 include src/CMakeFiles/grid2D.dir/flags.make
 
 src/CommonBehavior.cpp:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "BU ice=>h/cpp: Generating CommonBehavior.h and CommonBehavior.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice -I/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "BU ice=>h/cpp: Generating CommonBehavior.h and CommonBehavior.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.ice -I/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
 
 src/CommonBehavior.h: src/CommonBehavior.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate src/CommonBehavior.h
 
 src/Grid2D.cpp:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "BU ice=>h/cpp: Generating Grid2D.h and Grid2D.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice -I/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "BU ice=>h/cpp: Generating Grid2D.h and Grid2D.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.ice -I/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
 
 src/Grid2D.h: src/Grid2D.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate src/Grid2D.h
 
 src/Lidar3D.cpp:
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "BU ice=>h/cpp: Generating Lidar3D.h and Lidar3D.cpp from /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice -I/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "BU ice=>h/cpp: Generating Lidar3D.h and Lidar3D.cpp from /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && slice2cpp --underscore /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.ice -I/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ --output-dir .
 
 src/Lidar3D.h: src/Lidar3D.cpp
 	@$(CMAKE_COMMAND) -E touch_nocreate src/Lidar3D.h
 
 src/ui_mainUI.h: src/mainUI.ui
 src/ui_mainUI.h: /usr/lib/qt6/libexec/uic
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating ui_mainUI.h"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/lib/qt6/libexec/uic -o /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ui_mainUI.h /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/mainUI.ui
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Generating ui_mainUI.h"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/lib/qt6/libexec/uic -o /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/ui_mainUI.h /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/mainUI.ui
 
 src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/moc
 src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/uic
 src/grid2D_autogen/timestamp: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Automatic MOC and UIC for target grid2D"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json ""
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/305/bin/cmake/linux/x64/bin/cmake -E touch /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/timestamp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Automatic MOC and UIC for target grid2D"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json ""
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E touch /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/timestamp
 
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o: src/grid2D_autogen/mocs_compilation.cpp
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o -MF CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o -MF CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o.d -o CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp
 
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp > CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp > CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.i
 
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp -o CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/mocs_compilation.cpp -o CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.s
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o: /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o -c /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.o -c /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.i
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/abstract_graphic_viewer/abstract_graphic_viewer.cpp.s
 
 src/CMakeFiles/grid2D.dir/specificworker.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/specificworker.cpp.o: src/specificworker.cpp
 src/CMakeFiles/grid2D.dir/specificworker.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/grid2D.dir/specificworker.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/specificworker.cpp.o -MF CMakeFiles/grid2D.dir/specificworker.cpp.o.d -o CMakeFiles/grid2D.dir/specificworker.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object src/CMakeFiles/grid2D.dir/specificworker.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/specificworker.cpp.o -MF CMakeFiles/grid2D.dir/specificworker.cpp.o.d -o CMakeFiles/grid2D.dir/specificworker.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp
 
 src/CMakeFiles/grid2D.dir/specificworker.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/specificworker.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp > CMakeFiles/grid2D.dir/specificworker.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp > CMakeFiles/grid2D.dir/specificworker.cpp.i
 
 src/CMakeFiles/grid2D.dir/specificworker.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/specificworker.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp -o CMakeFiles/grid2D.dir/specificworker.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificworker.cpp -o CMakeFiles/grid2D.dir/specificworker.cpp.s
 
 src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o: src/specificmonitor.cpp
 src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o -MF CMakeFiles/grid2D.dir/specificmonitor.cpp.o.d -o CMakeFiles/grid2D.dir/specificmonitor.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/specificmonitor.cpp.o -MF CMakeFiles/grid2D.dir/specificmonitor.cpp.o.d -o CMakeFiles/grid2D.dir/specificmonitor.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp
 
 src/CMakeFiles/grid2D.dir/specificmonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/specificmonitor.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp > CMakeFiles/grid2D.dir/specificmonitor.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp > CMakeFiles/grid2D.dir/specificmonitor.cpp.i
 
 src/CMakeFiles/grid2D.dir/specificmonitor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/specificmonitor.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp -o CMakeFiles/grid2D.dir/specificmonitor.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/specificmonitor.cpp -o CMakeFiles/grid2D.dir/specificmonitor.cpp.s
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o: /home/robocomp/robocomp/classes/rapplication/rapplication.cpp
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o -c /home/robocomp/robocomp/classes/rapplication/rapplication.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.o -c /home/robocomp/robocomp/classes/rapplication/rapplication.cpp
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/rapplication/rapplication.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/rapplication/rapplication.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.i
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/rapplication/rapplication.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/rapplication/rapplication.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/rapplication/rapplication.cpp.s
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o: /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o -c /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.o -c /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.i
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/sigwatch/sigwatch.cpp.s
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o: /home/robocomp/robocomp/classes/qlog/qlog.cpp
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o -c /home/robocomp/robocomp/classes/qlog/qlog.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_12) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.o -c /home/robocomp/robocomp/classes/qlog/qlog.cpp
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/qlog/qlog.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/qlog/qlog.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.i
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/qlog/qlog.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/qlog/qlog.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/qlog/qlog.cpp.s
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o: /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o -c /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_13) "Building CXX object src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o -MF CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o.d -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.o -c /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp > CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.i
 
 src/CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp -o CMakeFiles/grid2D.dir/home/robocomp/robocomp/classes/grafcetStep/GRAFCETStep.cpp.s
 
 src/CMakeFiles/grid2D.dir/main.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/main.cpp.o: src/main.cpp
 src/CMakeFiles/grid2D.dir/main.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/grid2D.dir/main.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/main.cpp.o -MF CMakeFiles/grid2D.dir/main.cpp.o.d -o CMakeFiles/grid2D.dir/main.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_14) "Building CXX object src/CMakeFiles/grid2D.dir/main.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/main.cpp.o -MF CMakeFiles/grid2D.dir/main.cpp.o.d -o CMakeFiles/grid2D.dir/main.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp
 
 src/CMakeFiles/grid2D.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/main.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp > CMakeFiles/grid2D.dir/main.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp > CMakeFiles/grid2D.dir/main.cpp.i
 
 src/CMakeFiles/grid2D.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/main.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp -o CMakeFiles/grid2D.dir/main.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/main.cpp -o CMakeFiles/grid2D.dir/main.cpp.s
 
 src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o: src/genericmonitor.cpp
 src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o -MF CMakeFiles/grid2D.dir/genericmonitor.cpp.o.d -o CMakeFiles/grid2D.dir/genericmonitor.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_15) "Building CXX object src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/genericmonitor.cpp.o -MF CMakeFiles/grid2D.dir/genericmonitor.cpp.o.d -o CMakeFiles/grid2D.dir/genericmonitor.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp
 
 src/CMakeFiles/grid2D.dir/genericmonitor.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/genericmonitor.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp > CMakeFiles/grid2D.dir/genericmonitor.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp > CMakeFiles/grid2D.dir/genericmonitor.cpp.i
 
 src/CMakeFiles/grid2D.dir/genericmonitor.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/genericmonitor.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp -o CMakeFiles/grid2D.dir/genericmonitor.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericmonitor.cpp -o CMakeFiles/grid2D.dir/genericmonitor.cpp.s
 
 src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o: src/commonbehaviorI.cpp
 src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o -MF CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o.d -o CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_16) "Building CXX object src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o -MF CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o.d -o CMakeFiles/grid2D.dir/commonbehaviorI.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp
 
 src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/commonbehaviorI.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp > CMakeFiles/grid2D.dir/commonbehaviorI.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp > CMakeFiles/grid2D.dir/commonbehaviorI.cpp.i
 
 src/CMakeFiles/grid2D.dir/commonbehaviorI.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/commonbehaviorI.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp -o CMakeFiles/grid2D.dir/commonbehaviorI.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/commonbehaviorI.cpp -o CMakeFiles/grid2D.dir/commonbehaviorI.cpp.s
 
 src/CMakeFiles/grid2D.dir/genericworker.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/genericworker.cpp.o: src/genericworker.cpp
 src/CMakeFiles/grid2D.dir/genericworker.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object src/CMakeFiles/grid2D.dir/genericworker.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/genericworker.cpp.o -MF CMakeFiles/grid2D.dir/genericworker.cpp.o.d -o CMakeFiles/grid2D.dir/genericworker.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_17) "Building CXX object src/CMakeFiles/grid2D.dir/genericworker.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/genericworker.cpp.o -MF CMakeFiles/grid2D.dir/genericworker.cpp.o.d -o CMakeFiles/grid2D.dir/genericworker.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp
 
 src/CMakeFiles/grid2D.dir/genericworker.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/genericworker.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp > CMakeFiles/grid2D.dir/genericworker.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp > CMakeFiles/grid2D.dir/genericworker.cpp.i
 
 src/CMakeFiles/grid2D.dir/genericworker.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/genericworker.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp -o CMakeFiles/grid2D.dir/genericworker.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/genericworker.cpp -o CMakeFiles/grid2D.dir/genericworker.cpp.s
 
 src/CMakeFiles/grid2D.dir/grid2dI.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/grid2dI.cpp.o: src/grid2dI.cpp
 src/CMakeFiles/grid2D.dir/grid2dI.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object src/CMakeFiles/grid2D.dir/grid2dI.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/grid2dI.cpp.o -MF CMakeFiles/grid2D.dir/grid2dI.cpp.o.d -o CMakeFiles/grid2D.dir/grid2dI.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_18) "Building CXX object src/CMakeFiles/grid2D.dir/grid2dI.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/grid2dI.cpp.o -MF CMakeFiles/grid2D.dir/grid2dI.cpp.o.d -o CMakeFiles/grid2D.dir/grid2dI.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp
 
 src/CMakeFiles/grid2D.dir/grid2dI.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/grid2dI.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp > CMakeFiles/grid2D.dir/grid2dI.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp > CMakeFiles/grid2D.dir/grid2dI.cpp.i
 
 src/CMakeFiles/grid2D.dir/grid2dI.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/grid2dI.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp -o CMakeFiles/grid2D.dir/grid2dI.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2dI.cpp -o CMakeFiles/grid2D.dir/grid2dI.cpp.s
 
 src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o: src/CommonBehavior.cpp
 src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o -MF CMakeFiles/grid2D.dir/CommonBehavior.cpp.o.d -o CMakeFiles/grid2D.dir/CommonBehavior.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_19) "Building CXX object src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.o -MF CMakeFiles/grid2D.dir/CommonBehavior.cpp.o.d -o CMakeFiles/grid2D.dir/CommonBehavior.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp
 
 src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/CommonBehavior.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp > CMakeFiles/grid2D.dir/CommonBehavior.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp > CMakeFiles/grid2D.dir/CommonBehavior.cpp.i
 
 src/CMakeFiles/grid2D.dir/CommonBehavior.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/CommonBehavior.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp -o CMakeFiles/grid2D.dir/CommonBehavior.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CommonBehavior.cpp -o CMakeFiles/grid2D.dir/CommonBehavior.cpp.s
 
 src/CMakeFiles/grid2D.dir/Grid2D.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/Grid2D.cpp.o: src/Grid2D.cpp
 src/CMakeFiles/grid2D.dir/Grid2D.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object src/CMakeFiles/grid2D.dir/Grid2D.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/Grid2D.cpp.o -MF CMakeFiles/grid2D.dir/Grid2D.cpp.o.d -o CMakeFiles/grid2D.dir/Grid2D.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_20) "Building CXX object src/CMakeFiles/grid2D.dir/Grid2D.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/Grid2D.cpp.o -MF CMakeFiles/grid2D.dir/Grid2D.cpp.o.d -o CMakeFiles/grid2D.dir/Grid2D.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp
 
 src/CMakeFiles/grid2D.dir/Grid2D.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/Grid2D.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp > CMakeFiles/grid2D.dir/Grid2D.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp > CMakeFiles/grid2D.dir/Grid2D.cpp.i
 
 src/CMakeFiles/grid2D.dir/Grid2D.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/Grid2D.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp -o CMakeFiles/grid2D.dir/Grid2D.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Grid2D.cpp -o CMakeFiles/grid2D.dir/Grid2D.cpp.s
 
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o: src/CMakeFiles/grid2D.dir/flags.make
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o: src/Lidar3D.cpp
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o: src/CMakeFiles/grid2D.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o -MF CMakeFiles/grid2D.dir/Lidar3D.cpp.o.d -o CMakeFiles/grid2D.dir/Lidar3D.cpp.o -c /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_21) "Building CXX object src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT src/CMakeFiles/grid2D.dir/Lidar3D.cpp.o -MF CMakeFiles/grid2D.dir/Lidar3D.cpp.o.d -o CMakeFiles/grid2D.dir/Lidar3D.cpp.o -c /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp
 
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/grid2D.dir/Lidar3D.cpp.i"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp > CMakeFiles/grid2D.dir/Lidar3D.cpp.i
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp > CMakeFiles/grid2D.dir/Lidar3D.cpp.i
 
 src/CMakeFiles/grid2D.dir/Lidar3D.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/grid2D.dir/Lidar3D.cpp.s"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp -o CMakeFiles/grid2D.dir/Lidar3D.cpp.s
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/Lidar3D.cpp -o CMakeFiles/grid2D.dir/Lidar3D.cpp.s
 
 # Object files for target grid2D
 grid2D_OBJECTS = \
@@ -378,15 +378,15 @@ bin/grid2D: /usr/lib/x86_64-linux-gnu/libQt6Core.so.6.2.4
 bin/grid2D: /usr/lib/x86_64-linux-gnu/libGLX.so
 bin/grid2D: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 bin/grid2D: src/CMakeFiles/grid2D.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable ../bin/grid2D"
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/grid2D.dir/link.txt --verbose=$(VERBOSE)
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_22) "Linking CXX executable ../bin/grid2D"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/grid2D.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
 src/CMakeFiles/grid2D.dir/build: bin/grid2D
 .PHONY : src/CMakeFiles/grid2D.dir/build
 
 src/CMakeFiles/grid2D.dir/clean:
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D.dir/cmake_clean.cmake
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && $(CMAKE_COMMAND) -P CMakeFiles/grid2D.dir/cmake_clean.cmake
 .PHONY : src/CMakeFiles/grid2D.dir/clean
 
 src/CMakeFiles/grid2D.dir/depend: src/CommonBehavior.cpp
@@ -397,6 +397,6 @@ src/CMakeFiles/grid2D.dir/depend: src/Lidar3D.cpp
 src/CMakeFiles/grid2D.dir/depend: src/Lidar3D.h
 src/CMakeFiles/grid2D.dir/depend: src/grid2D_autogen/timestamp
 src/CMakeFiles/grid2D.dir/depend: src/ui_mainUI.h
-	cd /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/robocomp/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : src/CMakeFiles/grid2D.dir/depend
 

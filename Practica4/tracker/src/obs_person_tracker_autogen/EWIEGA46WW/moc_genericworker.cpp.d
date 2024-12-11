@@ -1,9 +1,90 @@
-/home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/obs_person_tracker_autogen/EWIEGA46WW/moc_genericworker.cpp: /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/genericworker.h \
-  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/obs_person_tracker_autogen/moc_predefs.h \
+/home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/obs_person_tracker_autogen/EWIEGA46WW/moc_genericworker.cpp: /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/genericworker.h \
+  /home/usuario/robocomp/components/Grupo11Rob/Practica4/tracker/src/obs_person_tracker_autogen/moc_predefs.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/Camera360RGB.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/CommonBehavior.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/GenericBase.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/Grid2D.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/Lidar3D.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/OmniRobot.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/VisualElementsPub.h \
   /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/config.h \
+  /home/usuario/robocomp_ws/src/robocomp/components/Grupo11Rob/Practica4/tracker/src/ui_mainUI.h \
   /home/usuario/robocomp_ws/src/robocomp/robocomp_core/classes/grafcetStep/GRAFCETStep.h \
   /home/usuario/robocomp_ws/src/robocomp/robocomp_core/classes/qlog/qlog.h \
   /usr/include/GL/gl.h \
+  /usr/include/Ice/AsyncResult.h \
+  /usr/include/Ice/BatchRequestQueueF.h \
+  /usr/include/Ice/Buffer.h \
+  /usr/include/Ice/BuiltinSequences.h \
+  /usr/include/Ice/CommunicatorF.h \
+  /usr/include/Ice/Comparable.h \
+  /usr/include/Ice/Config.h \
+  /usr/include/Ice/ConnectionF.h \
+  /usr/include/Ice/ConnectionIF.h \
+  /usr/include/Ice/Current.h \
+  /usr/include/Ice/DefaultValueFactory.h \
+  /usr/include/Ice/EndpointF.h \
+  /usr/include/Ice/EndpointTypes.h \
+  /usr/include/Ice/Exception.h \
+  /usr/include/Ice/ExceptionHelpers.h \
+  /usr/include/Ice/FactoryTable.h \
+  /usr/include/Ice/FactoryTableInit.h \
+  /usr/include/Ice/Format.h \
+  /usr/include/Ice/GCObject.h \
+  /usr/include/Ice/Handle.h \
+  /usr/include/Ice/Identity.h \
+  /usr/include/Ice/Incoming.h \
+  /usr/include/Ice/IncomingAsyncF.h \
+  /usr/include/Ice/InputStream.h \
+  /usr/include/Ice/InstanceF.h \
+  /usr/include/Ice/Instrumentation.h \
+  /usr/include/Ice/LocalException.h \
+  /usr/include/Ice/LocalObject.h \
+  /usr/include/Ice/LoggerF.h \
+  /usr/include/Ice/Object.h \
+  /usr/include/Ice/ObjectAdapterF.h \
+  /usr/include/Ice/ObjectF.h \
+  /usr/include/Ice/ObserverHelper.h \
+  /usr/include/Ice/Optional.h \
+  /usr/include/Ice/OutgoingAsync.h \
+  /usr/include/Ice/OutgoingAsyncF.h \
+  /usr/include/Ice/OutputStream.h \
+  /usr/include/Ice/Protocol.h \
+  /usr/include/Ice/Proxy.h \
+  /usr/include/Ice/ProxyF.h \
+  /usr/include/Ice/ProxyFactoryF.h \
+  /usr/include/Ice/ProxyHandle.h \
+  /usr/include/Ice/ReferenceF.h \
+  /usr/include/Ice/RequestHandlerF.h \
+  /usr/include/Ice/ResponseHandlerF.h \
+  /usr/include/Ice/ServantLocatorF.h \
+  /usr/include/Ice/ServantManagerF.h \
+  /usr/include/Ice/SlicedDataF.h \
+  /usr/include/Ice/StreamHelpers.h \
+  /usr/include/Ice/UniquePtr.h \
+  /usr/include/Ice/UserExceptionFactory.h \
+  /usr/include/Ice/Value.h \
+  /usr/include/Ice/ValueF.h \
+  /usr/include/Ice/ValueFactory.h \
+  /usr/include/Ice/Version.h \
+  /usr/include/IceUtil/Atomic.h \
+  /usr/include/IceUtil/Cond.h \
+  /usr/include/IceUtil/Config.h \
+  /usr/include/IceUtil/Exception.h \
+  /usr/include/IceUtil/Handle.h \
+  /usr/include/IceUtil/Lock.h \
+  /usr/include/IceUtil/Monitor.h \
+  /usr/include/IceUtil/Mutex.h \
+  /usr/include/IceUtil/MutexProtocol.h \
+  /usr/include/IceUtil/PopDisableWarnings.h \
+  /usr/include/IceUtil/PushDisableWarnings.h \
+  /usr/include/IceUtil/ScopedArray.h \
+  /usr/include/IceUtil/Shared.h \
+  /usr/include/IceUtil/Thread.h \
+  /usr/include/IceUtil/ThreadException.h \
+  /usr/include/IceUtil/Time.h \
+  /usr/include/IceUtil/Timer.h \
+  /usr/include/IceUtil/UndefSysMacros.h \
   /usr/include/alloca.h \
   /usr/include/asm-generic/errno-base.h \
   /usr/include/asm-generic/errno.h \
@@ -35,6 +116,7 @@
   /usr/include/c++/12/bits/cpp_type_traits.h \
   /usr/include/c++/12/bits/cxxabi_forced.h \
   /usr/include/c++/12/bits/cxxabi_init_exception.h \
+  /usr/include/c++/12/bits/deque.tcc \
   /usr/include/c++/12/bits/enable_special_members.h \
   /usr/include/c++/12/bits/erase_if.h \
   /usr/include/c++/12/bits/exception.h \
@@ -87,6 +169,7 @@
   /usr/include/c++/12/bits/shared_ptr_atomic.h \
   /usr/include/c++/12/bits/shared_ptr_base.h \
   /usr/include/c++/12/bits/specfun.h \
+  /usr/include/c++/12/bits/sstream.tcc \
   /usr/include/c++/12/bits/std_abs.h \
   /usr/include/c++/12/bits/std_function.h \
   /usr/include/c++/12/bits/std_mutex.h \
@@ -94,6 +177,7 @@
   /usr/include/c++/12/bits/stl_algobase.h \
   /usr/include/c++/12/bits/stl_bvector.h \
   /usr/include/c++/12/bits/stl_construct.h \
+  /usr/include/c++/12/bits/stl_deque.h \
   /usr/include/c++/12/bits/stl_function.h \
   /usr/include/c++/12/bits/stl_heap.h \
   /usr/include/c++/12/bits/stl_iterator.h \
@@ -102,10 +186,12 @@
   /usr/include/c++/12/bits/stl_list.h \
   /usr/include/c++/12/bits/stl_map.h \
   /usr/include/c++/12/bits/stl_multimap.h \
+  /usr/include/c++/12/bits/stl_multiset.h \
   /usr/include/c++/12/bits/stl_numeric.h \
   /usr/include/c++/12/bits/stl_pair.h \
   /usr/include/c++/12/bits/stl_raw_storage_iter.h \
   /usr/include/c++/12/bits/stl_relops.h \
+  /usr/include/c++/12/bits/stl_set.h \
   /usr/include/c++/12/bits/stl_tempbuf.h \
   /usr/include/c++/12/bits/stl_tree.h \
   /usr/include/c++/12/bits/stl_uninitialized.h \
@@ -121,6 +207,7 @@
   /usr/include/c++/12/bits/uses_allocator_args.h \
   /usr/include/c++/12/bits/utility.h \
   /usr/include/c++/12/bits/vector.tcc \
+  /usr/include/c++/12/cassert \
   /usr/include/c++/12/cctype \
   /usr/include/c++/12/cerrno \
   /usr/include/c++/12/climits \
@@ -131,6 +218,7 @@
   /usr/include/c++/12/concepts \
   /usr/include/c++/12/cstddef \
   /usr/include/c++/12/cstdint \
+  /usr/include/c++/12/cstdio \
   /usr/include/c++/12/cstdlib \
   /usr/include/c++/12/cstring \
   /usr/include/c++/12/ctime \
@@ -138,6 +226,7 @@
   /usr/include/c++/12/cwctype \
   /usr/include/c++/12/debug/assertions.h \
   /usr/include/c++/12/debug/debug.h \
+  /usr/include/c++/12/deque \
   /usr/include/c++/12/exception \
   /usr/include/c++/12/ext/aligned_buffer.h \
   /usr/include/c++/12/ext/alloc_traits.h \
@@ -173,6 +262,8 @@
   /usr/include/c++/12/pstl/glue_numeric_defs.h \
   /usr/include/c++/12/random \
   /usr/include/c++/12/ratio \
+  /usr/include/c++/12/set \
+  /usr/include/c++/12/sstream \
   /usr/include/c++/12/stdexcept \
   /usr/include/c++/12/streambuf \
   /usr/include/c++/12/string \
@@ -322,6 +413,7 @@
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QString \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QStringList \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QTimer \
+  /usr/include/x86_64-linux-gnu/qt6/QtCore/QVariant \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QtCore \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/QtCoreDepends \
   /usr/include/x86_64-linux-gnu/qt6/QtCore/qabstractanimation.h \
@@ -651,9 +743,35 @@
   /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/qstatemachine.h \
   /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/qstatemachineglobal.h \
   /usr/include/x86_64-linux-gnu/qt6/QtStateMachine/qtstatemachine-config.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QApplication \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QFrame \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QHBoxLayout \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLCDNumber \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QLabel \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QPushButton \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QSpacerItem \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QSplitter \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QVBoxLayout \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/QWidget \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qabstractbutton.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qapplication.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qboxlayout.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qframe.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qgridlayout.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlabel.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlayout.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlayoutitem.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qlcdnumber.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qpushbutton.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsizepolicy.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qsplitter.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgets-config.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qtwidgetsglobal.h \
+  /usr/include/x86_64-linux-gnu/qt6/QtWidgets/qwidget.h \
   /usr/include/x86_64-linux-gnu/sys/cdefs.h \
   /usr/include/x86_64-linux-gnu/sys/select.h \
   /usr/include/x86_64-linux-gnu/sys/syscall.h \
+  /usr/include/x86_64-linux-gnu/sys/time.h \
   /usr/include/x86_64-linux-gnu/sys/types.h \
   /usr/lib/gcc/x86_64-linux-gnu/12/include/adxintrin.h \
   /usr/lib/gcc/x86_64-linux-gnu/12/include/amxbf16intrin.h \

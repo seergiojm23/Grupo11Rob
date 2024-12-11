@@ -105,7 +105,7 @@ void SpecificWorker::compute()
             if(not tp_person.has_value())
                 return;
         }
-   
+
     // call grid2d proxy
     std::vector<Eigen::Vector2f> path;
     try {
@@ -283,8 +283,8 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
     }
 
     // angle error is the angle between the robot and the person. It has to be brought to zero
-    float lastElementX = path[1].x();
-    float lastElementY = path[1].y();
+    float lastElementX = path[20].x();
+    float lastElementY = path[20].y();
 
     float angle_error = atan2f(lastElementX, lastElementY);
     float rot_speed = params.k1 * angle_error + params.k2 * (angle_error-ant_angle_error);
@@ -295,7 +295,7 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
     float acc_distance = params.acc_distance_factor * params.ROBOT_WIDTH;
     // advance brake is a value between 0 and 1 that decreases the speed when the robot is too close to the person
     float adv_brake = std::clamp(dist * 1.f/acc_distance - (params.PERSON_MIN_DIST / acc_distance), 0.f, 1.f);
-    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake, rot_speed);
+    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake * 0.2, rot_speed);
 }
 //
 SpecificWorker::RetVal SpecificWorker::wait(const std::vector<Eigen::Vector2f> &path)
