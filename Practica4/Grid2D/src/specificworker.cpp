@@ -176,114 +176,150 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
     // Verificar que las posiciones de inicio y objetivo son válidas
     if (!start.has_value() || !target.has_value())
     {
-        qWarning() << "Posicin de inicio o objetivo no válida.";
+        qWarning() << "Posición de inicio o de objetivo no válida.";
         return {};
     }
 
-    // Desempaquetar las posiciones
     auto [start_x, start_y] = start.value();
     auto [target_x, target_y] = target.value();
 
-    // Direcciones de movimiento (arriba, abajo, izquierda, derecha)
-    const std::vector<std::tuple<int, int>> directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
+    // Verificar límites del inicio y el objetivo
+    if (start_x < 0 || start_y < 0 || start_x >= NUM_CELLS_X || start_y >= NUM_CELLS_Y ||
+        target_x < 0 || target_y < 0 || target_x >= NUM_CELLS_X || target_y >= NUM_CELLS_Y)
+    {
+        qWarning() << "Inicio u objetivo fuera de los límites del mapa.";
+        return {};
+    }
 
-    // Mapa de distancias mínimas desde el inicio
-    std::unordered_map<std::tuple<int, int>, int, boost::hash<std::tuple<int, int>>> min_distance;
+    // Crear una matriz para indicar celdas no transitables + margen
+    std::vector<bool> non_traversable(NUM_CELLS_X * NUM_CELLS_Y, false);
 
-    // Mapa para reconstruir el camino
-    std::unordered_map<std::tuple<int, int>, std::tuple<int, int>, boost::hash<std::tuple<int, int>>> previous;
-
-    // Inicializar distancias
+    // Ajustar el margen de obstáculos. Ejemplo: 3 celdas
+    const int MARGIN = 6;
     for (int i = 0; i < NUM_CELLS_X; ++i)
     {
         for (int j = 0; j < NUM_CELLS_Y; ++j)
         {
-            std::tuple<int, int> pos = {i, j};
-            if (grid[i][j].state == State::Occupied /*or grid[i][j].state == State::Unknown*/)
-                min_distance[pos] = std::numeric_limits<int>::max(); // Obstáculo
-            else
-                min_distance[pos] = std::numeric_limits<int>::max();
-        }
-    }
-
-    // Distancia al punto inicial es 0
-    std::tuple<int, int> start_pos = {start_x, start_y};
-    min_distance[start_pos] = 0;
-
-    // Crear la cola de prioridad (min heap)
-    std::priority_queue<std::pair<int, std::tuple<int, int>>,
-                        std::vector<std::pair<int, std::tuple<int, int>>>,
-                        std::greater<>> pq;
-    pq.push({0, start_pos});
-
-    // Algoritmo de Dijkstra
-    while (!pq.empty())
-    {
-        auto [current_dist, current] = pq.top();
-        pq.pop();
-
-        // Si llegamos al objetivo, detener
-        if (current == std::make_tuple(target_x, target_y))
-            break;
-
-        // Obtener coordenadas del nodo actual
-        auto [cx, cy] = current;
-
-        // Explorar vecinos
-        for (const auto &[dx, dy] : directions)
-        {
-            int nx = cx + dx;
-            int ny = cy + dy;
-
-            // Verificar límites de la cuadrícula
-            if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
-                continue;
-
-            // Verificar si la celda es transitable
-            if (grid[nx][ny].state == State::Occupied)
-                continue;
-
-            std::tuple<int, int> neighbor = {nx, ny};
-            int new_dist = current_dist + 1; // Coste uniforme de 1 para cada movimiento
-
-            // Actualizar si se encuentra un camino más corto
-            if (new_dist < min_distance[neighbor])
+            if (grid[i][j].state == State::Occupied)
             {
-                min_distance[neighbor] = new_dist;
-                previous[neighbor] = current;
-                pq.push({new_dist, neighbor});
+                for (int dx = -MARGIN; dx <= MARGIN; ++dx)
+                {
+                    for (int dy = -MARGIN; dy <= MARGIN; ++dy)
+                    {
+                        int nx = i + dx;
+                        int ny = j + dy;
+                        if (nx >= 0 && ny >= 0 && nx < NUM_CELLS_X && ny < NUM_CELLS_Y)
+                        {
+                            non_traversable[nx * NUM_CELLS_Y + ny] = true;
+                        }
+                    }
+                }
             }
         }
     }
 
-    // Reconstruir el camino desde el objetivo al inicio
-    std::vector<std::tuple<int, int>> path;
-    std::tuple<int, int> current = {target_x, target_y};
-
-    while (current != start_pos)
+    // Si el objetivo es intransitable, retornar vacío
+    if (non_traversable[target_x * NUM_CELLS_Y + target_y])
     {
-        path.push_back(current);
-        if (previous.find(current) == previous.end())
-        {
-            qWarning() << "No se encontró un camino válido.";
-            return {};
-        }
-        current = previous[current];
+        qWarning() << "El objetivo está dentro de una zona no transitable.";
+        return {};
     }
-    path.push_back(start_pos);
-    std::reverse(path.begin(), path.end());
 
+    // Vectores para distancias y predecesores
+    std::vector<int> dist(NUM_CELLS_X * NUM_CELLS_Y, std::numeric_limits<int>::max());
+    std::vector<int> previous(NUM_CELLS_X * NUM_CELLS_Y, -1);
 
+    auto index = [=](int x, int y) { return x * NUM_CELLS_Y + y; };
 
+    int start_index = index(start_x, start_y);
+    int target_index = index(target_x, target_y);
 
-    // Pintar el camino en la cuadrícula
-	std::vector<QPointF> path_points;
-	path_points.reserve(path.size());
-    for (const auto &[x, y] : path)
-    	path_points.emplace_back(get_lidar_point(x, y));
+    dist[start_index] = 0;
 
-	return path_points;
+    // Movimientos (arriba, abajo, izquierda, derecha)
+    const std::array<std::pair<int,int>,4> directions = {{{1,0},{-1,0},{0,1},{0,-1}}};
+
+    // Cola de prioridad para Dijkstra
+    using PQItem = std::pair<int,int>; // <dist, index>
+    std::priority_queue<PQItem, std::vector<PQItem>, std::greater<>> pq;
+    pq.push({0, start_index});
+
+    bool found = false;
+
+    while(!pq.empty())
+    {
+        auto [current_dist, current] = pq.top();
+        pq.pop();
+
+        if(current == target_index)
+        {
+            found = true;
+            break;
+        }
+
+        // Si ya tenemos una distancia mejor, seguimos
+        if(current_dist > dist[current])
+            continue;
+
+        int cx = current / NUM_CELLS_Y;
+        int cy = current % NUM_CELLS_Y;
+
+        for (auto [dx, dy] : directions)
+        {
+            int nx = cx + dx;
+            int ny = cy + dy;
+
+            if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
+                continue;
+
+            int n_index = index(nx, ny);
+
+            if (non_traversable[n_index])
+                continue;
+
+            int new_dist = current_dist + 1;
+            if (new_dist < dist[n_index])
+            {
+                dist[n_index] = new_dist;
+                previous[n_index] = current;
+                pq.push({new_dist, n_index});
+            }
+        }
+    }
+
+    if(!found)
+    {
+        qWarning() << "No se encontró un camino válido hasta el objetivo.";
+        return {};
+    }
+
+    // Reconstrucción del camino
+    std::vector<int> path_indices;
+    for(int at = target_index; at != -1; at = previous[at])
+        path_indices.push_back(at);
+
+    std::reverse(path_indices.begin(), path_indices.end());
+
+    // Convertir índices a (x,y)
+    std::vector<std::tuple<int,int>> path_cells;
+    path_cells.reserve(path_indices.size());
+    for(auto idx : path_indices)
+    {
+        int x = idx / NUM_CELLS_Y;
+        int y = idx % NUM_CELLS_Y;
+        path_cells.push_back({x,y});
+    }
+
+    // Convertir a QPointF
+    std::vector<QPointF> path_points;
+    path_points.reserve(path_cells.size());
+    for (const auto &[x, y] : path_cells)
+        path_points.emplace_back(get_lidar_point(x, y));
+
+    return path_points;
 }
+
+
 
 void SpecificWorker::draw_path(const vector<QPointF> &path, QGraphicsScene *scene)
 {
@@ -408,8 +444,8 @@ void SpecificWorker::regruesadoObstaculo()
 			if (celda.state == State::Occupied and not celda.changed) {
 				// for (auto &[x, y]: directions)
 				// {
-				for (int x = -8; x < 9; x++)
-					for (int y = -8; y < 9; y++)
+				for (int x = -2; x < 3; x++)
+					for (int y = -2; y < 3; y++)
 					{
 						auto sumai = i + x;
 						auto sumaj = j + y;
@@ -465,8 +501,8 @@ void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 
 	const auto &[x, y] = p;
 
-	for (int i = -8; i < 9; i++)
-		for (int j = -8; j < 9; j++)
+	for (int i = -2; i < 3; i++)
+		for (int j = -2; j < 3; j++)
 		{
 			grid[x + i][y + j].state = State::Empty;
 		}
@@ -476,24 +512,40 @@ void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 
 RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint source, RoboCompGrid2D::TPoint target)
 {
-	auto p = get_grid_index(target.x,target.y);
+	auto p = get_grid_index(target.x, target.y);
 
-	if ( not p.has_value())
-		return {};
+	// Si no hay persona, no retornamos un camino vacío directamente,
+	// sino que devolvemos el último path calculado.
+	if (not p.has_value())
+	{
+		qWarning() << "No se ha encontrado persona en la posición solicitada. Devolviendo último path calculado.";
+		RoboCompGrid2D::Result res1;
+		for (const auto &[x, y] : path) // 'path' ya es un miembro de la clase
+		{
+			res1.path.emplace_back(x, y);
+		}
+		return res1;
+	}
 
 	std::optional<std::tuple<int, int>> meta = get_grid_index(target.x, target.y);
 	std::optional<std::tuple<int, int>> salida = get_grid_index(0.f, 0.f);
 
 	BorrarPersona(p.value());
 
-	path = dijkstraAlgorithm(salida, meta);
+	// Si hay persona, calculamos un nuevo path con Dijkstra
+	auto new_path = dijkstraAlgorithm(salida, meta);
+
+	if (!new_path.empty())
+	{
+		path = new_path;
+	}
 
 	parar_compute.store(false);
 
 	RoboCompGrid2D::Result res;
-
-	for	(const auto &[x, y]: path) {
-		res.path.emplace_back(x,y);
+	for (const auto &[x, y] : path)
+	{
+		res.path.emplace_back(x, y);
 	}
 
 	return res;
@@ -501,9 +553,9 @@ RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint so
 #ifdef HIBERNATION_ENABLED
 	hibernation = true;
 #endif
-//implementCODE
-
+	//implementCODE
 }
+
 
 
 

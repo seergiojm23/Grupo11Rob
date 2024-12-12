@@ -140,7 +140,7 @@ void SpecificWorker::compute()
     lcdNumber_rot ->display(rot);
 
     // move the robot
-    qDebug () << adv << rot;
+    //qDebug () << adv << rot;
     try {
         omnirobot_proxy->setSpeedBase(0.f, adv, rot);
     }
@@ -276,15 +276,16 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
 
     // check if the distance to the person is lower than a threshold
 
-    qDebug () << "La distancia es " << dist << path.size();
-    if(dist < params.PERSON_MIN_DIST)
+    //qDebug () << "La distancia es " << dist << path.size();
+    if(path.size() < 15)
      { qWarning() << __FUNCTION__ << "Distance to person lower than threshold";
         return RetVal(STATE::WAIT, 0.f, 0.f);
     }
 
+
     // angle error is the angle between the robot and the person. It has to be brought to zero
-    float lastElementX = path[20].x();
-    float lastElementY = path[20].y();
+    float lastElementX = path[15].x();
+    float lastElementY = path[15].y();
 
     float angle_error = atan2f(lastElementX, lastElementY);
     float rot_speed = params.k1 * angle_error + params.k2 * (angle_error-ant_angle_error);
@@ -295,7 +296,7 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
     float acc_distance = params.acc_distance_factor * params.ROBOT_WIDTH;
     // advance brake is a value between 0 and 1 that decreases the speed when the robot is too close to the person
     float adv_brake = std::clamp(dist * 1.f/acc_distance - (params.PERSON_MIN_DIST / acc_distance), 0.f, 1.f);
-    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake * 0.2, rot_speed);
+    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake * 0.3, rot_speed);
 }
 //
 SpecificWorker::RetVal SpecificWorker::wait(const std::vector<Eigen::Vector2f> &path)
@@ -307,7 +308,10 @@ SpecificWorker::RetVal SpecificWorker::wait(const std::vector<Eigen::Vector2f> &
     float lastElementY = path[path.size() - 1].y();
 
     // check if the person is further than a threshold
-    if(std::hypot(lastElementX, lastElementY) > params.PERSON_MIN_DIST + 100)
+    // if(std::hypot(lastElementX, lastElementY) > params.PERSON_MIN_DIST + 100)
+    //     return RetVal(STATE::TRACK, 0.f, 0.f);
+
+    if (path.size() > 15)
         return RetVal(STATE::TRACK, 0.f, 0.f);
 
     return RetVal(STATE::WAIT, 0.f, 0.f);
