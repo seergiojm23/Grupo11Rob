@@ -99,7 +99,7 @@ src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/moc
 src/grid2D_autogen/timestamp: /usr/lib/qt6/libexec/uic
 src/grid2D_autogen/timestamp: src/CMakeFiles/grid2D.dir/compiler_depend.ts
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --blue --bold --progress-dir=/home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Automatic MOC and UIC for target grid2D"
-	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json ""
+	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E cmake_autogen /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/CMakeFiles/grid2D_autogen.dir/AutogenInfo.json Debug
 	cd /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src && /snap/clion/308/bin/cmake/linux/x64/bin/cmake -E touch /home/usuario/robocomp/components/Grupo11Rob/Practica4/Grid2D/src/grid2D_autogen/timestamp
 
 src/CMakeFiles/grid2D.dir/grid2D_autogen/mocs_compilation.cpp.o: src/CMakeFiles/grid2D.dir/flags.make

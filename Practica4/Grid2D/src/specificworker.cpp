@@ -114,6 +114,7 @@ void SpecificWorker::compute()
 
 	clear_grid();
 	// Update grid
+	std::lock_guard<std::mutex> lg (mutex);
 	update_grid(ldata_bpearl);
 	regruesadoObstaculo();
 
@@ -171,6 +172,154 @@ void SpecificWorker::clear_grid()
 		}
 }
 
+// std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridPosition target)
+// {
+//     // Verificar que las posiciones de inicio y objetivo son válidas
+//     if (!start.has_value() || !target.has_value())
+//     {
+//         qWarning() << "Posición de inicio o de objetivo no válida.";
+//         return {};
+//     }
+//
+//     auto [start_x, start_y] = start.value();
+//     auto [target_x, target_y] = target.value();
+//
+//     // Verificar límites del inicio y el objetivo
+//     if (start_x < 0 || start_y < 0 || start_x >= NUM_CELLS_X || start_y >= NUM_CELLS_Y ||
+//         target_x < 0 || target_y < 0 || target_x >= NUM_CELLS_X || target_y >= NUM_CELLS_Y)
+//     {
+//         qWarning() << "Inicio u objetivo fuera de los límites del mapa.";
+//         return {};
+//     }
+//
+//     // Crear una matriz para indicar celdas no transitables + margen
+//     std::vector<bool> non_traversable(NUM_CELLS_X * NUM_CELLS_Y, false);
+//
+//     // Ajustar el margen de obstáculos. Ejemplo: 3 celdas
+//     const int MARGIN = 2;
+//     for (int i = 0; i < NUM_CELLS_X; ++i)
+//     {
+//         for (int j = 0; j < NUM_CELLS_Y; ++j)
+//         {
+//             if (grid[i][j].state == State::Occupied)
+//             {
+//                 for (int dx = -MARGIN; dx <= MARGIN; ++dx)
+//                 {
+//                     for (int dy = -MARGIN; dy <= MARGIN; ++dy)
+//                     {
+//                         int nx = i + dx;
+//                         int ny = j + dy;
+//                         if (nx >= 0 && ny >= 0 && nx < NUM_CELLS_X && ny < NUM_CELLS_Y)
+//                         {
+//                             non_traversable[nx * NUM_CELLS_Y + ny] = true;
+//                         }
+//                     }
+//                 }
+//             }
+//         }
+//     }
+//
+//     // Si el objetivo es intransitable, retornar vacío
+//     if (non_traversable[target_x * NUM_CELLS_Y + target_y])
+//     {
+//         qWarning() << "El objetivo está dentro de una zona no transitable.";
+//         return {};
+//     }
+//
+//     // Vectores para distancias y predecesores
+//     std::vector<int> dist(NUM_CELLS_X * NUM_CELLS_Y, std::numeric_limits<int>::max());
+//     std::vector<int> previous(NUM_CELLS_X * NUM_CELLS_Y, -1);
+//
+//     auto index = [=](int x, int y) { return x * NUM_CELLS_Y + y; };
+//
+//     int start_index = index(start_x, start_y);
+//     int target_index = index(target_x, target_y);
+//
+//     dist[start_index] = 0;
+//
+//     // Movimientos (arriba, abajo, izquierda, derecha)
+//     //const std::array<std::pair<int,int>,4> directions = {{{1,0},{-1,0},{0,1},{0,-1}}};
+// 	const std::array<std::pair<int,int>,8> directions = {{{1,0},{-1,0},{0,1},{0,-1}, {1,1}, {1,-1}, {-1,1}, {-1,-1}}};
+//     // Cola de prioridad para Dijkstra
+//     using PQItem = std::pair<int,int>; // <dist, index>
+//     std::priority_queue<PQItem, std::vector<PQItem>, std::greater<>> pq;
+//     pq.push({0, start_index});
+//
+//     bool found = false;
+//
+//     while(!pq.empty())
+//     {
+//         auto [current_dist, current] = pq.top();
+//         pq.pop();
+//
+//         if(current == target_index)
+//         {
+//             found = true;
+//             break;
+//         }
+//
+//         // Si ya tenemos una distancia mejor, seguimos
+//         if(current_dist > dist[current])
+//             continue;
+//
+//         int cx = current / NUM_CELLS_Y;
+//         int cy = current % NUM_CELLS_Y;
+//
+//         for (auto [dx, dy] : directions)
+//         {
+//             int nx = cx + dx;
+//             int ny = cy + dy;
+//
+//             if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
+//                 continue;
+//
+//             int n_index = index(nx, ny);
+//
+//             if (non_traversable[n_index])
+//                 continue;
+//
+//             int new_dist = current_dist + 1;
+//             if (new_dist < dist[n_index])
+//             {
+//                 dist[n_index] = new_dist;
+//                 previous[n_index] = current;
+//                 pq.push({new_dist, n_index});
+//             }
+//         }
+//     }
+//
+//     if(!found)
+//     {
+//         qWarning() << "No se encontró un camino válido hasta el objetivo.";
+//         return {};
+//     }
+//
+//     // Reconstrucción del camino
+//     std::vector<int> path_indices;
+//     for(int at = target_index; at != -1; at = previous[at])
+//         path_indices.push_back(at);
+//
+//     std::reverse(path_indices.begin(), path_indices.end());
+//
+//     // Convertir índices a (x,y)
+//     std::vector<std::tuple<int,int>> path_cells;
+//     path_cells.reserve(path_indices.size());
+//     for(auto idx : path_indices)
+//     {
+//         int x = idx / NUM_CELLS_Y;
+//         int y = idx % NUM_CELLS_Y;
+//         path_cells.push_back({x,y});
+//     }
+//
+//     // Convertir a QPointF
+//     std::vector<QPointF> path_points;
+//     path_points.reserve(path_cells.size());
+//     for (const auto &[x, y] : path_cells)
+//         path_points.emplace_back(get_lidar_point(x, y));
+//
+//     return path_points;
+// }
+
 std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridPosition target)
 {
     // Verificar que las posiciones de inicio y objetivo son válidas
@@ -194,14 +343,15 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
     // Crear una matriz para indicar celdas no transitables + margen
     std::vector<bool> non_traversable(NUM_CELLS_X * NUM_CELLS_Y, false);
 
-    // Ajustar el margen de obstáculos. Ejemplo: 3 celdas
-    const int MARGIN = 6;
+    // Ajustar el margen de obstáculos. Ejemplo: 2 celdas
+    const int MARGIN = 2;
     for (int i = 0; i < NUM_CELLS_X; ++i)
     {
         for (int j = 0; j < NUM_CELLS_Y; ++j)
         {
             if (grid[i][j].state == State::Occupied)
             {
+                // Marcar la celda ocupada y sus celdas vecinas dentro del margen como no transitables
                 for (int dx = -MARGIN; dx <= MARGIN; ++dx)
                 {
                     for (int dy = -MARGIN; dy <= MARGIN; ++dy)
@@ -236,8 +386,8 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
 
     dist[start_index] = 0;
 
-    // Movimientos (arriba, abajo, izquierda, derecha)
-    const std::array<std::pair<int,int>,4> directions = {{{1,0},{-1,0},{0,1},{0,-1}}};
+    // Movimientos (arriba, abajo, izquierda, derecha, y diagonales)
+    const std::array<std::pair<int,int>,8> directions = {{{1,0},{-1,0},{0,1},{0,-1}, {1,1}, {1,-1}, {-1,1}, {-1,-1}}};
 
     // Cola de prioridad para Dijkstra
     using PQItem = std::pair<int,int>; // <dist, index>
@@ -269,11 +419,13 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
             int nx = cx + dx;
             int ny = cy + dy;
 
+            // Verificar si la nueva casilla está dentro de los límites y no es intransitable
             if (nx < 0 || ny < 0 || nx >= NUM_CELLS_X || ny >= NUM_CELLS_Y)
                 continue;
 
             int n_index = index(nx, ny);
 
+            // Si la celda no es transitables, saltarla
             if (non_traversable[n_index])
                 continue;
 
@@ -318,6 +470,9 @@ std::vector<QPointF> SpecificWorker::dijkstraAlgorithm(GridPosition start, GridP
 
     return path_points;
 }
+
+
+
 
 
 
@@ -444,8 +599,8 @@ void SpecificWorker::regruesadoObstaculo()
 			if (celda.state == State::Occupied and not celda.changed) {
 				// for (auto &[x, y]: directions)
 				// {
-				for (int x = -2; x < 3; x++)
-					for (int y = -2; y < 3; y++)
+				for (int x = -3; x < 4; x++)
+					for (int y = -3; y < 4; y++)
 					{
 						auto sumai = i + x;
 						auto sumaj = j + y;
@@ -501,10 +656,11 @@ void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 
 	const auto &[x, y] = p;
 
-	for (int i = -2; i < 3; i++)
-		for (int j = -2; j < 3; j++)
+	for (int i = -4; i < 5; i++)
+		for (int j = -4; j < 5; j++)
 		{
-			grid[x + i][y + j].state = State::Empty;
+			if (x + i < NUM_CELLS_X and x+i > 0 and y + j < NUM_CELLS_Y and y + j > 0 )
+				grid[x + i][y + j].state = State::Empty;
 		}
 }
 
@@ -533,6 +689,7 @@ RoboCompGrid2D::Result SpecificWorker::Grid2D_getPaths(RoboCompGrid2D::TPoint so
 	BorrarPersona(p.value());
 
 	// Si hay persona, calculamos un nuevo path con Dijkstra
+	std::lock_guard<std::mutex> lg (mutex);
 	auto new_path = dijkstraAlgorithm(salida, meta);
 
 	if (!new_path.empty())

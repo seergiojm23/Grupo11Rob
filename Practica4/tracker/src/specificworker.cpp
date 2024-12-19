@@ -108,20 +108,26 @@ void SpecificWorker::compute()
 
     // call grid2d proxy
     std::vector<Eigen::Vector2f> path;
-    try {
-        auto res = grid2d_proxy->getPaths(RoboCompGrid2D::TPoint {0,0},
-                                         RoboCompGrid2D::TPoint {std::stof(tp_person.value().attributes.at("x_pos")),
-                                            std::stof(tp_person.value().attributes.at("y_pos"))});
-        for (const auto& p : res.path)
-            path.emplace_back(p.x, p.y);
+    //static int cont = 3;
+    //if (cont %3 == 0) {
+        try {
+            auto res = grid2d_proxy->getPaths(RoboCompGrid2D::TPoint {0,0},
+                                             RoboCompGrid2D::TPoint {std::stof(tp_person.value().attributes.at("x_pos")),
+                                                std::stof(tp_person.value().attributes.at("y_pos"))});
+            for (const auto& p : res.path)
+                path.emplace_back(p.x, p.y);
 
 
 
-    }catch(const Ice::Exception &e) {
-        std::cout << e << std::endl;
-        return;
+        }catch(const Ice::Exception &e) {
+            std::cout << e << std::endl;
+            return;
 
-    }
+        }
+    //}
+    //else
+    //    cont++;
+
 
     // call state machine to track person
     const auto &[adv, rot] = state_machine(path);
@@ -284,8 +290,14 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
 
 
     // angle error is the angle between the robot and the person. It has to be brought to zero
-    float lastElementX = path[15].x();
-    float lastElementY = path[15].y();
+    int valor = static_cast<int>(path.size()*0.4);
+    if (valor <= 0)
+        valor = 1;
+
+    float lastElementX = path[10].x();
+    float lastElementY = path[10].y();
+
+    qDebug() << dist << "Es la distancia";
 
     float angle_error = atan2f(lastElementX, lastElementY);
     float rot_speed = params.k1 * angle_error + params.k2 * (angle_error-ant_angle_error);
@@ -296,25 +308,47 @@ SpecificWorker::RetVal SpecificWorker::track(const std::vector<Eigen::Vector2f> 
     float acc_distance = params.acc_distance_factor * params.ROBOT_WIDTH;
     // advance brake is a value between 0 and 1 that decreases the speed when the robot is too close to the person
     float adv_brake = std::clamp(dist * 1.f/acc_distance - (params.PERSON_MIN_DIST / acc_distance), 0.f, 1.f);
-    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake * 0.3, rot_speed);
+    return RetVal(STATE::TRACK, params.MAX_ADV_SPEED * rot_brake * adv_brake, rot_speed);
 }
 //
 SpecificWorker::RetVal SpecificWorker::wait(const std::vector<Eigen::Vector2f> &path)
 {
-    if(path.empty())
-    {  qWarning() << __FUNCTION__ << "No person found"; return RetVal(STATE::TRACK, 0.f, 0.f); }
 
     float lastElementX = path[path.size() - 1].x();
     float lastElementY = path[path.size() - 1].y();
+    static float rot;
+    auto angulo = atan2(lastElementX, lastElementY);
+    if (angulo != 0.f)
+        rot  = angulo;
 
-    // check if the person is further than a threshold
-    // if(std::hypot(lastElementX, lastElementY) > params.PERSON_MIN_DIST + 100)
-    //     return RetVal(STATE::TRACK, 0.f, 0.f);
+    std::expected<RoboCompVisualElementsPub::TObject, std::string> tp_person = std::unexpected("No person found");
+    auto [data_] = buffer.read_first();
+    if(data_.has_value()) {
+        tp_person = find_person_in_data(data_.value().objects);
 
-    if (path.size() > 15)
-        return RetVal(STATE::TRACK, 0.f, 0.f);
+        if(not tp_person.has_value()) {
+            if(path.empty())
+            {  qWarning() << __FUNCTION__ << "No person found"; return RetVal(STATE::TRACK, 0.f, 0.f); }
 
-    return RetVal(STATE::WAIT, 0.f, 0.f);
+
+
+
+            // check if the person is further than a threshold
+            // if(std::hypot(lastElementX, lastElementY) > params.PERSON_MIN_DIST + 100)
+            //     return RetVal(STATE::TRACK, 0.f, 0.f);
+
+            if (distance_to_person_along_path(path) > params.PERSON_MIN_DIST)
+                return RetVal(STATE::TRACK, 0.f, 0.f);
+
+            return RetVal(STATE::WAIT, 0.f, rot);
+        }
+        else {
+            if (distance_to_person_along_path(path) < params.PERSON_MIN_DIST)
+                return RetVal(STATE::WAIT, 0.f, rot);
+
+            return RetVal(STATE::TRACK, 0.f, 0.f);
+        }
+    }
 
 }
 // Search when no person is found
