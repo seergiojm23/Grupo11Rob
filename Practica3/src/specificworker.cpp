@@ -89,7 +89,7 @@ void SpecificWorker::initialize()
 }
 void SpecificWorker::compute()
 {
-     //read bpearl (lower) lidar and draw
+    ///Leer los datos de lidar bpearl y helios
     auto ldata_bpearl = read_lidar_bpearl();
     if(ldata_bpearl.empty()) { qWarning() << __FUNCTION__ << "Empty bpearl lidar data"; return; };
     //draw_lidar(ldata.points, &viewer->scene);
@@ -98,36 +98,36 @@ void SpecificWorker::compute()
     if(ldata_helios.empty()) { qWarning() << __FUNCTION__ << "Empty helios lidar data"; return; };
     //draw_lidar(ldata.points, &viewer->scene);
 
-    /// wall lines
+    /// Detectar las lineas de las paredes usando la Transformada de Hough
     auto lines = detect_wall_lines(ldata_helios, &viewer->scene);
 
-    /// remove wall points
+    /// Eliminar los puntos de las paredes, solo quedan los puntos de obstáculos y la persona.
     auto bpearl = remove_wall_points(lines, ldata_bpearl);
     draw_lidar(bpearl, &viewer->scene);
 
-    /// find obstacles
-    auto obstacles = rc::dbscan(bpearl, params.ROBOT_WIDTH, 2);
+    /// Se agrupan los puntos restantes en polígonos con el algoritmo DBSCAN.
+    auto obstacles = rc::dbscan(bpearl, params.ROBOT_WIDTH, 2);  //DBSCAN detecta grupos de puntos cercanos y los convierte en polígonos.
     enlarge_polygons(obstacles, params.ROBOT_WIDTH/2);
 
-    /// check if there is new YOLO data in buffer
+    /// check if there is new YOLO data in buffer, Leer YOLO para detectar a la persona
     std::expected<RoboCompVisualElementsPub::TObject, std::string> tp_person = std::unexpected("No person found");
     auto [data_] = buffer.read_first();
     if(data_.has_value())
         tp_person = find_person_in_data(data_.value().objects);
 
-    /// remove person from obstacles
+    /// remove person from obstacles, Identificar el polígono que contiene la persona y eliminarlo
     if(tp_person)
         obstacles = find_person_polygon_and_remove(tp_person.value(), obstacles);
 
-    /// enlarge obstacles
+    /// Se expanden los polígonos de los obstáculos para evitar colisiones
     obstacles = enlarge_polygons(obstacles, params.ROBOT_WIDTH);
     draw_obstacles(obstacles, &viewer->scene, Qt::darkMagenta);
 
-    /// get walls as polygons
+    /// Se convierten las líneas de las paredes en polígonos para evitar colisiones
     std::vector<QPolygonF> wall_obs = get_walls_as_polygons(lines, params.ROBOT_WIDTH/4);
     obstacles.insert(obstacles.end(), wall_obs.begin(), wall_obs.end());
 
-    /// compute an obstacle free path
+    /// Generar el camino a seguir para llegar a la persona libre de obstáculos
     std::vector<Eigen::Vector2f> path;
     if(tp_person)
     {
@@ -140,10 +140,10 @@ void SpecificWorker::compute()
         draw_path_to_person(path, &viewer->scene);
     }
 
-    // call state machine to track person
+    // Llamar a la máquina de estados para mover el robot en función del camino
     const auto &[adv, rot] = state_machine(path);
 
-    // plot on UI
+    // plot on UI. (Mostrar en la interfaz gráfica los valores de distancia y ángulo)
     if(tp_person and path.size() > 0)
     {
         float d = distance_to_person_along_path(path);

@@ -283,11 +283,13 @@ SpecificWorker::RetVal SpecificWorker::track(const Expect &person, const RoboCom
             return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         }
 
+        //Todo lo anterior es para girar si se acerca a un obstáculo
 
         RoboCompVisualElementsPub::TData data;
         auto [data_] = buffer.read_first();
         if(not data_.has_value()) { qWarning() << __FUNCTION__ << "Empty buffer"; return RetVal(STATE::STOP, 0.f, 0.f);; }
         else data = data_.value();
+
 
         auto persona = find_person_in_data(data.objects);
         if (not persona.has_value()) {
@@ -295,20 +297,22 @@ SpecificWorker::RetVal SpecificWorker::track(const Expect &person, const RoboCom
         }
 
         auto distance = std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos")));
+        //Distancia se calcula como la hipotenusa de x e y de la persona porque la hipotenusa es la linea recta entre el robot y la persona
 
         lcdNumber_dist_to_person->display(distance);
 
         auto velocidad = 0.55 * distance;
+        //Velocidad se calcula como 0.55*distancia porque queremos que la velocidad sea proporcional a la distancia
 
         // check if the distance to the person is lower than a threshold
         if(distance < params.PERSON_MIN_DIST)
         {   qWarning() << __FUNCTION__ << "Distance to person lower than threshold"; return RetVal(STATE::WAIT, 0.f, 0.f);}
 
         /// TRACK   PUT YOUR CODE HERE
-        auto x = std::stof(person.value().attributes.at("x_pos"));
-        auto y = std::stof(person.value().attributes.at("y_pos"));
-        //Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
-        double arct = atan2(x,y);
+        auto x = std::stof(person.value().attributes.at("x_pos")); //Obtener la posición x de la persona
+        auto y = std::stof(person.value().attributes.at("y_pos")); //Obtener la posición y de la persona
+        double arct = atan2(x,y);//Calcular arcotangente de y,x (esto es porque queremos que el eje y sea x y viceversa)
+        //Esto calcula el ángulo que forma la persona respecto "nariz" del robot
 
         /*
         if(distance < params.PERSON_MIN_DIST*1.7) {
@@ -316,7 +320,7 @@ SpecificWorker::RetVal SpecificWorker::track(const Expect &person, const RoboCom
         }
         */
 
-        return RetVal(STATE::TRACK, velocidad, arct);
+        return RetVal(STATE::TRACK, velocidad, arct); //robot gira hacia la persona mientras avanza
     }
 
 
@@ -345,7 +349,7 @@ SpecificWorker::RetVal SpecificWorker::wait(const Expect &person)
     //qDebug() << __FUNCTION__ ;
 
 
-    // check if the person is further than a threshold
+    // Comprobar si la persona está más lejos que umbral
     if(std::hypot(std::stof(person.value().attributes.at("x_pos")), std::stof(person.value().attributes.at("y_pos"))) > params.PERSON_MIN_DIST + 100){
         return RetVal(STATE::TRACK, 0.f, 0.f);
     }
@@ -369,7 +373,7 @@ SpecificWorker::RetVal SpecificWorker::search(const Expect &person)
     //Girar izquierda
     float rotacion = -0.8 * params.MAX_ROT_SPEED;
 
-    return RetVal(STATE::SEARCH, 0, rotacion);
+    return RetVal(STATE::SEARCH, 0, rotacion); //Se queda girando hasta que encuentre a la persona
 }
 
 

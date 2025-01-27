@@ -45,10 +45,11 @@ void SpecificWorker::initialize() {
     } else {
         ///////////// Your code ////////
         // Viewer
-        viewer = new AbstractGraphicViewer(this->frame, params.GRID_MAX_DIM);
+        viewer = new AbstractGraphicViewer(this->frame, params.GRID_MAX_DIM); //Crea un viewer con el frame y el tamaño del grid
         auto [r, e] = viewer->add_robot(params.ROBOT_WIDTH, params.ROBOT_LENGTH, 0, 100, QColor("Blue"));
+        //Esto lo que hace es que el robot se dibuje en la posición 0,100 y de color azul y se guarda en la variable robot_draw
         robot_draw = r;
-        viewer->show();
+        viewer->show();//Muestra el viewer
 
         ///////////////////////////////
 #ifdef HIBERNATION_ENABLED
@@ -60,19 +61,22 @@ void SpecificWorker::initialize() {
 }
 
 void SpecificWorker::compute() {
-    RoboCompLidar3D::TData ldata;
+    RoboCompLidar3D::TData ldata; //Variable para guardar los datos del LIDAR
     try { ldata = lidar3d_proxy->getLidarData("bpearl", 0, 2 * M_PI, 1); } catch (const Ice::Exception &e) {
         std::cout << e << std::endl;
     }
+    //Esto lo que hace es que se obtienen los datos del LIDAR y se guardan en la variable ldata
 
-    RoboCompLidar3D::TPoints p_filter;
+    RoboCompLidar3D::TPoints p_filter; //Variable para guardar los puntos filtrados
     std::ranges::copy_if(ldata.points, std::back_inserter(p_filter),
                          [](auto &a) { return a.z < 500 and a.distance2d > 200; });
 
-    draw_lidar(p_filter, &viewer->scene);
+    //Esto lo que hace es que se copian los puntos del LIDAR que cumplen la condición en p_filter
 
-    /// Add State machine with your sweeping logic
-    RetVal ret_val;
+    draw_lidar(p_filter, &viewer->scene); //Dibuja los puntos del LIDAR que cumplen la condición en el viewer
+
+    /// Añade máquina de estados con los métodos forward, turn, spiral y follow_wall
+    RetVal ret_val; //Variable para guardar el valor de retorno de la máquina de estados
 
     switch (state) {
         case STATE::FORWARD: {
@@ -95,11 +99,13 @@ void SpecificWorker::compute() {
         }
     }
     /// unpack  the tuple
-    auto [st, adv, rot] = ret_val;
-    state = st;
+    auto [st, adv, rot] = ret_val; //Desempaqueta el valor de retorno de la máquina de estados
+    state = st; //Guarda el estado en la variable state
+    //Las tuplas son de la forma (estado, velocidad de avance, velocidad de rotación)
 
     /// Send movements commands to the robot
     try { omnirobot_proxy->setSpeedBase(0, adv, rot); } catch (const Ice::Exception &e) { std::cout << e << std::endl; }
+    //Esto lo que hace es que se envían los comandos de movimiento al robot con la velocidad de avance y rotación
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
@@ -120,11 +126,17 @@ SpecificWorker::RetVal SpecificWorker::forward(auto &points) {
     // check if the central part of the filtered_points vector has a minimum lower than the size of the robot
     auto offset_begin = closest_lidar_index_to_given_angle(points, -params.LIDAR_FRONT_SECTION);
     auto offset_end = closest_lidar_index_to_given_angle(points, params.LIDAR_FRONT_SECTION);
-    if (offset_begin and offset_end) {
+
+    //El objetivo de encontrar el primer punto a la izquierda y el primero a la derecha es delimitar un rango de puntos que representen la zona frontal del robot.
+
+    if (offset_begin and offset_end) { //Si hay lecturas válidas
         auto min_point = std::min_element(std::begin(points) + offset_begin.value(),
                                           std::begin(points) + offset_end.value(), [](auto &a, auto &b) {
                                               return a.distance2d < b.distance2d;
                                           });
+        //Busca el punto más cercano dentro del sector frontal del LIDAR, entre offset_begin y offset_end
+
+        //Si el punto más cercano está a una distancia menor que el umbral de parada, se detiene y cambia de estado
         if (min_point != points.end() and min_point->distance2d < params.STOP_THRESHOLD)
             return RetVal(STATE::TURN, 0.f, 0.f); // stop and change state if obstacle detected
         else
