@@ -103,7 +103,7 @@ void SpecificWorker::initialize()
 
 void SpecificWorker::compute()
 {
-	if (parar_compute)
+	if (parar_compute) //Para que no se ejecute el compute si se ha llamado a BorrarPersona, se volverá a activar cuando se haya borrado la persona
 		return;
 
 	//read bpearl (lower) lidar and draw
@@ -111,12 +111,13 @@ void SpecificWorker::compute()
 	if(ldata_bpearl.empty()) { qWarning() << __FUNCTION__ << "Empty bpearl lidar data"; return; };
 	draw_lidar(ldata_bpearl, &viewer->scene);
 
-
+	//clear grid
 	clear_grid();
+
 	// Update grid
-	std::lock_guard<std::mutex> lg (mutex);
+	std::lock_guard<std::mutex> lg (mutex); // Bloquear el mutex para evitar que se modifique la cuadrícula mientras se calcula el camino
 	update_grid(ldata_bpearl);
-	regruesadoObstaculo();
+	regruesadoObstaculo(); //Para que los obstáculos sean más gruesos y el robot no choque con ellos
 
 	draw_path(path, &viewer->scene);
 	qDebug() <<path.size() << "path size";
@@ -650,6 +651,8 @@ void SpecificWorker::new_mouse_coordinates(QPointF p)
 	path = dijkstraAlgorithm(salida, meta);
 }
 
+
+//Esto se hace para evitar que el robot considere a la persona como un obstáculo y genere una ruta que la esquive en lugar de alcanzarla.
 void SpecificWorker::BorrarPersona(const std::tuple<int, int> &p)
 {
 	parar_compute.store(true);
